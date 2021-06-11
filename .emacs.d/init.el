@@ -11,6 +11,8 @@
   (global-set-key (kbd "C-M-w") (lambda() (interactive)(switch-to-next-buffer)))
   (global-set-key (kbd "C-M-q") (lambda() (interactive)(switch-to-prev-buffer)))
 
+(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+
 (cd "~")
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
@@ -257,6 +259,26 @@
 (use-package yasnippet)
 (use-package yasnippet-snippets)
 (yas-global-mode)
+
+(use-package expand-region)
+(use-package sql-indent)
+(defun sql-indent-string ()
+  "Indents the string under the cursor as SQL."
+  (interactive)
+  (save-excursion
+    (er/mark-inside-quotes)
+    (let* ((text (buffer-substring-no-properties (region-beginning) (region-end)))
+           (pos (region-beginning))
+           (column (progn (goto-char pos) (current-column)))
+           (formatted-text (with-temp-buffer
+                             (insert text)
+                             (delete-trailing-whitespace)
+                             (sql-indent-buffer)
+                             (replace-string "\n" (concat "\n" (make-string column (string-to-char " "))) nil (point-min) (point-max))
+                             (buffer-string))))
+      (delete-region (region-beginning) (region-end))
+      (goto-char pos)
+      (insert formatted-text))))
 
 (defun duplicate-line()
   (interactive)
