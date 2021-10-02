@@ -260,6 +260,7 @@ On mac uk keyboard hastag is atl-3.
 *** Web mode
 Stole config form this fella's emacs setup
 https://github.com/gilesp/literate_emacs/blob/master/emacs.org
+https://gist.github.com/CodyReichert/9dbc8bd2a104780b64891d8736682cea
 #+begin_src emacs-lisp
   (defun my-web-mode-hook ()
     "Hooks for Web mode."
