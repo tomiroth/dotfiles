@@ -182,31 +182,45 @@
             ("C-c d" . dap-hydra))
 )
 
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  )
+(add-hook 'web-mode-hook  'my-web-mode-hook)
 (use-package web-mode
   :ensure t
-  :mode (("\\.js\\'" . web-mode)
-	   ("\\.jsx\\'" . web-mode)
-	   ("\\.ts\\'" . web-mode)
-	   ("\\.tsx\\'" . web-mode)
-	   ("\\.html\\'" . web-mode)
-	   ("\\.vue\\'" . web-mode)
-	   ("\\.json\\'" . web-mode))
+  :mode (("\\.html\\'" . web-mode)
+         ("\\.vue\\'" . web-mode)
+         ("\\.json\\'" . web-mode))
   :commands web-mode
+  :hook my-web-mode-hook
   :config
   (setq company-tooltip-align-annotations t)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-enable-part-face t)
-  (setq web-mode-content-types-alist
-	  '(("jsx" . "\\.js[x]?\\'")))
   )
+
+(use-package nvm)
 
 (use-package prettier)
 (add-hook 'web-mode-hook 'prettier-js-mode)
 
+(use-package css-mode
+  :mode "\\.css\\'"
+  :init
+  (setq css-indent-offset 2)
+  :hook (css-mode . lsp-deferred))
+
 (use-package typescript-mode
-  :mode "\\.ts\\'"
+  :mode (
+         ("\\.js\\'" . typescript-mode)
+         ("\\.jsx\\'" . typescript-mode)
+         ("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-mode))
   :hook (typescript-mode . lsp-deferred)
   :config
   (setq typescript-indent-level 2))
