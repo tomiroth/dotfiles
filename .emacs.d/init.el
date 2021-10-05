@@ -193,7 +193,11 @@
   :ensure t
   :mode (("\\.html\\'" . web-mode)
          ("\\.vue\\'" . web-mode)
-         ("\\.json\\'" . web-mode))
+         ("\\.json\\'" . web-mode)
+         ("\\.js\\'" . web-mode)
+         ("\\.jsx\\'" . web-mode)
+         ("\\.ts\\'" . web-mode)
+         ("\\.tsx\\'" . web-mode))
   :commands web-mode
   :hook my-web-mode-hook
   :config
@@ -214,16 +218,6 @@
   :init
   (setq css-indent-offset 2)
   :hook (css-mode . lsp-deferred))
-
-(use-package typescript-mode
-  :mode (
-         ("\\.js\\'" . typescript-mode)
-         ("\\.jsx\\'" . typescript-mode)
-         ("\\.ts\\'" . typescript-mode)
-         ("\\.tsx\\'" . typescript-mode))
-  :hook (typescript-mode . lsp-deferred)
-  :config
-  (setq typescript-indent-level 2))
 
 (setq js-indent-level 2)
 

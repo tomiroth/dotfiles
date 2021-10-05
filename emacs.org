@@ -273,7 +273,11 @@ https://gist.github.com/CodyReichert/9dbc8bd2a104780b64891d8736682cea
     :ensure t
     :mode (("\\.html\\'" . web-mode)
            ("\\.vue\\'" . web-mode)
-           ("\\.json\\'" . web-mode))
+           ("\\.json\\'" . web-mode)
+           ("\\.js\\'" . web-mode)
+           ("\\.jsx\\'" . web-mode)
+           ("\\.ts\\'" . web-mode)
+           ("\\.tsx\\'" . web-mode))
     :commands web-mode
     :hook my-web-mode-hook
     :config
@@ -303,23 +307,6 @@ https://gist.github.com/CodyReichert/9dbc8bd2a104780b64891d8736682cea
     :init
     (setq css-indent-offset 2)
     :hook (css-mode . lsp-deferred))
-
-
-
-#+end_src
-
-*** Type Script
-#+begin_src emacs-lisp
-
-  (use-package typescript-mode
-    :mode (
-           ("\\.js\\'" . typescript-mode)
-           ("\\.jsx\\'" . typescript-mode)
-           ("\\.ts\\'" . typescript-mode)
-           ("\\.tsx\\'" . typescript-mode))
-    :hook (typescript-mode . lsp-deferred)
-    :config
-    (setq typescript-indent-level 2))
 
 
 
