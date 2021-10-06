@@ -117,7 +117,12 @@
   (add-to-list 'projectile-globally-ignored-directories "*idea")
   (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
-  :bind (("C-M-s-p" . counsel-projectile-switch-project))
+  :bind (
+         ("C-M-s-p" . counsel-projectile-switch-project)
+         ("C-M-S-b" . counsel-projectile-switch-to-buffer)
+         ("C-M-S-f" . counsel-projectile-find-file)
+         ("C-M-S-v" . projectile-vc)
+         )
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
