@@ -45,31 +45,32 @@
 
 (defvar runemacs/default-font-size 135)
 
-(if (eq system-type 'darwin)
-  (set-face-attribute 'default nil :font "Fira Code Retina" :height runemacs/default-font-size)
-  (set-face-attribute 'default nil :font "courier" :height runemacs/default-font-size)
+(if (eq system-type 'windows-nt)
+(set-face-attribute 'default nil :font "courier" :height runemacs/default-font-size)
+(set-face-attribute 'default nil :font "Fira Code Retina" :height runemacs/default-font-size)
 )
 
-
 ;; Initialize package sources
-(require 'package)
+  (require 'package)
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
-(package-initialize)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
 
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-(unless package-archive-contents
- (package-refresh-contents))
+(if (eq system-type 'darwin)
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+  (unless package-archive-contents
+   (package-refresh-contents))
+)
 
-;; Initialize use-package on non-Linux platforms
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+  ;; Initialize use-package on non-Linux platforms
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
 
-(require 'use-package)
-(setq use-package-always-ensure t)
+  (require 'use-package)
+  (setq use-package-always-ensure t)
 
 (use-package which-key
   :init (which-key-mode)
@@ -424,10 +425,9 @@
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-    (if (eq system-type 'darwin)
-	(set-face-attribute (car face) nil :font "Fira Code Retina" :weight 'regular :height (cdr face))
+  (if (eq system-type 'window-nt)
       (set-face-attribute (car face) nil :font "courier" :weight 'regular :height (cdr face))
-      ))
+      (set-face-attribute (car face) nil :font "Fira Code Retina" :weight 'regular :height (cdr face))))
 
 ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
