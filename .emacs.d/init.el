@@ -72,6 +72,22 @@
   (require 'use-package)
   (setq use-package-always-ensure t)
 
+(use-package evil
+  :init
+  (use-package evil-leader
+    :commands (evil-leader-mode global-evil-leader-mode)
+    :demand
+    :config
+    (evil-leader/set-leader "SPC")
+    (global-evil-leader-mode t))
+  :config
+  (evil-mode 1))
+
+(evil-leader/set-key
+  "bn" 'next-buffer
+  "bp" 'previous-buffer
+  ";" 'other-window)
+
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode

@@ -106,6 +106,24 @@ On mac uk keyboard hastag is atl-3.
 #+end_src
 
 ** UI config
+*** Evil Mode
+#+begin_src emacs-lisp
+(use-package evil
+  :init
+  (use-package evil-leader
+    :commands (evil-leader-mode global-evil-leader-mode)
+    :demand
+    :config
+    (evil-leader/set-leader "SPC")
+    (global-evil-leader-mode t))
+  :config
+  (evil-mode 1))
+
+(evil-leader/set-key
+  "bn" 'next-buffer
+  "bp" 'previous-buffer
+  ";" 'other-window)
+#+end_src
 *** Which key
 
 #+begin_src emacs-lisp
