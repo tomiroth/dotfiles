@@ -145,23 +145,29 @@
   ("z"   projectile-cache-current-file)
   ("v"   projectile-vc)
   ("q"   nil "cancel" :color blue))
-
+(setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+(setq evil-want-keybinding nil)
 (use-package evil
-  :init
-  (use-package evil-leader
-    :commands (evil-leader-mode global-evil-leader-mode)
-    :demand
+    :init
+    (use-package evil-leader
+      :commands (evil-leader-mode global-evil-leader-mode)
+      :demand
+      :config
+      (evil-leader/set-leader "SPC")
+      (global-evil-leader-mode t))
     :config
-    (evil-leader/set-leader "SPC")
-    (global-evil-leader-mode t))
+    (evil-mode 1))
+    (global-set-key (kbd "C-i") 'evil-force-normal-state)
+ (use-package evil-collection
+  :after evil
+  :ensure t
   :config
-  (evil-mode 1))
-  (global-set-key (kbd "C-i") 'evil-force-normal-state)
+  (evil-collection-init))
 
-;(evil-leader/set-key
-;  "bn" 'next-buffer
-;  "bp" 'previous-buffer
-;  ";" 'other-window)
+  ;(evil-leader/set-key
+  ;  "bn" 'next-buffer
+  ;  "bp" 'previous-buffer
+  ;  ";" 'other-window)
 
 (use-package which-key
   :init (which-key-mode)
@@ -602,3 +608,16 @@
   "Open a new instance of eshell."
   (interactive)
   (eshell 'N))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(evil-mc ztree yasnippet-snippets yaml-mode yafolding which-key web-mode visual-fill-column use-package typescript-mode transpose-frame sql-indent speed-type rustic restclient react-snippets rainbow-delimiters prettier-js prettier phpunit php-mode php-cs-fixer perspective org-bullets org multiple-cursors monkeytype lsp-ui ivy-rich helpful general forge flycheck expand-region exec-path-from-shell evil-nerd-commenter evil-leader evil-collection doom-themes doom-modeline dired-subtree dap-mode counsel-projectile company-box command-log-mode all-the-icons-dired)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
