@@ -45,10 +45,12 @@
 
 (defvar runemacs/default-font-size 135)
 
+
 (if (eq system-type 'windows-nt)
-(set-face-attribute 'default nil :font "courier" :height runemacs/default-font-size)
-(set-face-attribute 'default nil :font "Fira Code Retina" :height runemacs/default-font-size)
+    (setq te-font-face "courier")
+    (setq te-font-face "Fira Code Retina")
 )
+(set-face-attribute 'default nil :font te-font-face :height runemacs/default-font-size)
 
 ;; Initialize package sources
   (require 'package)
@@ -516,9 +518,7 @@
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-  (if (eq system-type 'window-nt)
-      (set-face-attribute (car face) nil :font "courier" :weight 'regular :height (cdr face))
-      (set-face-attribute (car face) nil :font "Fira Code Retina" :weight 'regular :height (cdr face))))
+        (set-face-attribute (car face) nil :font te-font-face :weight 'regular :height (cdr face)))
 
 ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
