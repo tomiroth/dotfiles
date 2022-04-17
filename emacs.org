@@ -130,6 +130,18 @@ On mac uk keyboard hastag is atl-3.
   "cl" '(comment-or-uncomment-region-or-line :which-key "comment line")
   "w" '(hydra-window/body :which-key "Window")
   "p" '(hydra-projectile/body t :which-key "Buffer")
+  "s" '(:ignore t :which-key "Swiper")
+  "sS" '(swiper-isearch :which-key "Search")
+  "ss" '(swiper-thing-at-point :which-key "Thing at Point")
+  "f" '(:ignore t :which-key "Code folder")
+  "ff" '(yafolding-toggle-element :which-key "Toggle Element")
+  "fa" '(yafolding-toggle-all :which-key "Toggle All")
+  "(" '(:ignore t :which-key "Insert Pair")
+  "((" '(insert-pair :which-key "(")
+  "({" '(insert-pair :which-key "{")
+  "([" '(insert-pair :which-key "[")
+  "('" '(insert-pair :which-key "'")
+  "(\"" '(insert-pair :which-key "\"")
   )
 (defhydra hydra-buffer (:color blue :columns 3)
   "
@@ -262,7 +274,7 @@ On mac uk keyboard hastag is atl-3.
 *** Transpose frame
 #+begin_src emacs-lisp
   (use-package transpose-frame)
-  (global-set-key (kbd "C-M-s-y") 'transpose-frame)
+  (global-set-key (kbd "C-M-y") 'transpose-frame)
 #+end_src
 
 ** Project Managment
@@ -399,6 +411,9 @@ https://gist.github.com/CodyReichert/9dbc8bd2a104780b64891d8736682cea
   (add-hook 'web-mode-hook #'(lambda ()
                                (enable-minor-mode
                                 '("\\.jsx?\\'" . prettier-mode))))
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
+                                '("\\.ts?\\'" . prettier-mode))))
 #+end_src
 
 *** Node
@@ -512,8 +527,8 @@ https://robert.kra.hn/posts/2021-02-07_rust-with-emacs/
           (:map lsp-mode-map
            ("s-<tab>" . company-indent-or-complete-common))
     :custom
-    (company-minimum-prefix-length 1)
-    (company-idle-delay 0.0))
+    (company-minimum-prefix-length 3)
+    (company-idle-delay 0.5))
 
   (use-package company-box
     :hook (company-mode . company-box-mode))
@@ -677,7 +692,7 @@ Todo: Does this even work?
     :custom ((doom-modeline-height 15)))
 
   (use-package doom-themes
-    :init (load-theme 'doom-dracula t))
+    :init (load-theme 'doom-monokai-pro t))
 
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
