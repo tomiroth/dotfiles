@@ -110,8 +110,6 @@ On mac uk keyboard hastag is atl-3.
 *** General - Key mapping
 #+begin_src emacs-lisp
 (use-package general)
-(general-define-key
- "C-c" 'evil-force-normal-state)
 (general-create-definer my-leader-def
   ;; :prefix my-leader
   ;; or without a variable

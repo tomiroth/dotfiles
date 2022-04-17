@@ -45,10 +45,9 @@
 
 (defvar runemacs/default-font-size 135)
 
-
 (if (eq system-type 'windows-nt)
-    (setq te-font-face "courier")
-    (setq te-font-face "Fira Code Retina")
+(setq te-font-face "courier")
+(setq te-font-face "Fira Code Retina")
 )
 (set-face-attribute 'default nil :font te-font-face :height runemacs/default-font-size)
 
@@ -75,8 +74,6 @@
   (setq use-package-always-ensure t)
 
 (use-package general)
-(general-define-key
- "C-c C-c" 'evil-force-normal-state)
 (general-create-definer my-leader-def
   ;; :prefix my-leader
   ;; or without a variable
@@ -149,27 +146,24 @@
   ("q"   nil "cancel" :color blue))
 
 (use-package evil
-  :init
+    :init
     (setq evil-want-keybinding nil)
-  (use-package evil-leader
-    :commands (evil-leader-mode global-evil-leader-mode)
-    :demand
+    (use-package evil-leader
+        :commands (evil-leader-mode global-evil-leader-mode)
+        :demand
+        :config
+        (evil-leader/set-leader "SPC")
+        (global-evil-leader-mode t))
     :config
-    (evil-leader/set-leader "SPC")
-    (global-evil-leader-mode t))
-  :config
-  (evil-mode 1))
-  (global-set-key (kbd "C-i") 'evil-force-normal-state)
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
+    (evil-mode 1))
+    (global-set-key (kbd "C-i") 'evil-force-normal-state)
 
-;(evil-leader/set-key
-;  "bn" 'next-buffer
-;  "bp" 'previous-buffer
-;  ";" 'other-window)
+
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
 
 (use-package which-key
   :init (which-key-mode)
@@ -524,7 +518,7 @@
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-        (set-face-attribute (car face) nil :font te-font-face :weight 'regular :height (cdr face)))
+      (set-face-attribute (car face) nil :font te-font-face :weight 'regular :height (cdr face)))
 
 ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
