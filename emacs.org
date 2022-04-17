@@ -186,21 +186,25 @@ On mac uk keyboard hastag is atl-3.
 *** Evil Mode
 #+begin_src emacs-lisp
 (use-package evil
-  :init
-  (use-package evil-leader
-    :commands (evil-leader-mode global-evil-leader-mode)
-    :demand
+    :init
+    (setq evil-want-keybinding nil)
+    (use-package evil-leader
+        :commands (evil-leader-mode global-evil-leader-mode)
+        :demand
+        :config
+        (evil-leader/set-leader "SPC")
+        (global-evil-leader-mode t))
     :config
-    (evil-leader/set-leader "SPC")
-    (global-evil-leader-mode t))
-  :config
-  (evil-mode 1))
-  (global-set-key (kbd "C-i") 'evil-force-normal-state)
+    (evil-mode 1))
+    (global-set-key (kbd "C-i") 'evil-force-normal-state)
 
-;(evil-leader/set-key
-;  "bn" 'next-buffer
-;  "bp" 'previous-buffer
-;  ";" 'other-window)
+
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
+
 #+end_src
 *** Which key
 

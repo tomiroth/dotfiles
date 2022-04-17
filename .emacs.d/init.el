@@ -150,6 +150,7 @@
 
 (use-package evil
   :init
+    (setq evil-want-keybinding nil)
   (use-package evil-leader
     :commands (evil-leader-mode global-evil-leader-mode)
     :demand
@@ -159,6 +160,11 @@
   :config
   (evil-mode 1))
   (global-set-key (kbd "C-i") 'evil-force-normal-state)
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 ;(evil-leader/set-key
 ;  "bn" 'next-buffer
