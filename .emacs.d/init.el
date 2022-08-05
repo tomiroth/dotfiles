@@ -412,9 +412,6 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-(use-package evil-nerd-commenter
-    :bind ("M-/" . evilnc-comment-or-uncomment-lines))
-
 (use-package restclient
   :ensure t
   :mode (("\\.http\\'" . restclient-mode)))
@@ -453,14 +450,6 @@
   (yank)
 )
 (global-set-key (kbd "C-d") 'duplicate-line)
-
-(defun te/comment-line()
-    (interactiven)
-;;    (move-beginning-of-line 1)
-    (comment-line 1)
-;;    (next-line n1)
-  )
-  (global-set-key (kbd "s-/") 'te/comment-line)
 
 (global-set-key (kbd "s-]") 'forward-word)
 (global-set-key (kbd "s-[") 'backward-word)
@@ -627,16 +616,3 @@
   "Open a new instance of eshell."
   (interactive)
   (eshell 'N))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(evil-mc ztree yasnippet-snippets yaml-mode yafolding which-key web-mode visual-fill-column use-package typescript-mode transpose-frame sql-indent speed-type rustic restclient react-snippets rainbow-delimiters prettier-js prettier phpunit php-mode php-cs-fixer perspective org-bullets org multiple-cursors monkeytype lsp-ui ivy-rich helpful general forge flycheck expand-region exec-path-from-shell evil-nerd-commenter evil-leader evil-collection doom-themes doom-modeline dired-subtree dap-mode counsel-projectile company-box command-log-mode all-the-icons-dired)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
