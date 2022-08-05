@@ -34,8 +34,7 @@ On mac uk keyboard hastag is atl-3.
 
 #+begin_src emacs-lisp
   (cd "~")
-  (add-to-list 'default-frame-alist '(fullscreen . maximized))
-
+  (desktop-save-mode 1)
   (setq inhibit-startup-message t)
 
   (scroll-bar-mode -1)        ; Disable visible scrollbar

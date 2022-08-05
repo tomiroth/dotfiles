@@ -14,7 +14,7 @@
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 
 (cd "~")
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(desktop-save-mode 1)
 
 (setq inhibit-startup-message t)
 
