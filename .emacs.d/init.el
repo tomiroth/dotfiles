@@ -278,8 +278,9 @@
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :bind (("C-M-G" . lsp-ui-peek-find-definitions))
   :config
-  (lsp-enable-which-key-integration t)
   (setq lsp-intelephense-multi-root nil)
+  (setq lsp-enable-file-watchers nil)
+  (lsp-enable-which-key-integration t)
   (lsp))
 
 (use-package lsp-ui
@@ -356,7 +357,6 @@
     (dap-php-setup))
 
   (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
-  (add-hook 'php-mode-hook (lambda () (subword-mode 1)))
 
 ;; https://github.com/moskalyovd/emacs-php-doc-blockb
   (add-to-list 'load-path "~/.emacs.d/emacs-php-doc-block")
