@@ -93,6 +93,18 @@
   "cl" '(comment-or-uncomment-region-or-line :which-key "comment line")
   "w" '(hydra-window/body :which-key "Window")
   "p" '(hydra-projectile/body t :which-key "Buffer")
+  "s" '(:ignore t :which-key "Swiper")
+  "sS" '(swiper-isearch :which-key "Search")
+  "ss" '(swiper-thing-at-point :which-key "Thing at Point")
+  "f" '(:ignore t :which-key "Code folder")
+  "ff" '(yafolding-toggle-element :which-key "Toggle Element")
+  "fa" '(yafolding-toggle-all :which-key "Toggle All")
+  "(" '(:ignore t :which-key "Insert Pair")
+  "((" '(insert-pair :which-key "(")
+  "({" '(insert-pair :which-key "{")
+  "([" '(insert-pair :which-key "[")
+  "('" '(insert-pair :which-key "'")
+  "(\"" '(insert-pair :which-key "\"")
   )
 (defhydra hydra-buffer (:color blue :columns 3)
   "
@@ -145,25 +157,29 @@
   ("v"   projectile-vc)
   ("q"   nil "cancel" :color blue))
 
-(use-package evil
-    :init
-    (setq evil-want-keybinding nil)
-    (use-package evil-leader
-        :commands (evil-leader-mode global-evil-leader-mode)
-        :demand
-        :config
-        (evil-leader/set-leader "SPC")
-        (global-evil-leader-mode t))
-    :config
-    (evil-mode 1))
-    (global-set-key (kbd "C-i") 'evil-force-normal-state)
-
-
+(setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+(setq evil-want-keybinding nil)
+     (use-package evil
+       :init
+       (use-package evil-leader
+	 :commands (evil-leader-mode global-evil-leader-mode)
+	 :demand
+	 :config
+	 (evil-leader/set-leader "SPC")
+	 (global-evil-leader-mode t))
+       :config
+       (evil-mode 1))
+       (global-set-key (kbd "C-i") 'evil-force-normal-state)
   (use-package evil-collection
-    :after evil
-    :ensure t
-    :config
-    (evil-collection-init))
+   :after evil
+   :ensure t
+   :config
+   (evil-collection-init))
+
+     ;(evil-leader/set-key
+     ;  "bn" 'next-buffer
+     ;  "bp" 'previous-buffer
+     ;  ";" 'other-window)
 
 (use-package which-key
   :init (which-key-mode)
@@ -198,7 +214,7 @@
   ([remap describe-key] . helpful-key))
 
 (use-package transpose-frame)
-(global-set-key (kbd "C-M-s-y") 'transpose-frame)
+(global-set-key (kbd "C-M-y") 'transpose-frame)
 
 (use-package swiper
   :commands (swiper swiper-all)
@@ -308,6 +324,12 @@
 (add-hook 'web-mode-hook #'(lambda ()
                              (enable-minor-mode
                               '("\\.jsx?\\'" . prettier-mode))))
+(add-hook 'web-mode-hook #'(lambda ()
+                             (enable-minor-mode
+                              '("\\.ts?\\'" . prettier-mode))))
+(add-hook 'web-mode-hook #'(lambda ()
+                             (enable-minor-mode
+                              '("\\.tsx?\\'" . prettier-mode))))
 
 (use-package nvm)
 
@@ -383,14 +405,11 @@
         (:map lsp-mode-map
          ("s-<tab>" . company-indent-or-complete-common))
   :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+  (company-minimum-prefix-length 3)
+  (company-idle-delay 0.5))
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
-
-(use-package evil-nerd-commenter
-    :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 (use-package restclient
   :ensure t
@@ -430,14 +449,6 @@
   (yank)
 )
 (global-set-key (kbd "C-d") 'duplicate-line)
-
-(defun te/comment-line()
-    (interactiven)
-;;    (move-beginning-of-line 1)
-    (comment-line 1)
-;;    (next-line n1)
-  )
-  (global-set-key (kbd "s-/") 'te/comment-line)
 
 (global-set-key (kbd "s-]") 'forward-word)
 (global-set-key (kbd "s-[") 'backward-word)
@@ -493,7 +504,7 @@
   :custom ((doom-modeline-height 15)))
 
 (use-package doom-themes
-  :init (load-theme 'doom-dracula t))
+  :init (load-theme 'doom-monokai-pro t))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
