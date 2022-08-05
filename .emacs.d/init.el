@@ -328,6 +328,9 @@
 (add-hook 'web-mode-hook #'(lambda ()
                              (enable-minor-mode
                               '("\\.ts?\\'" . prettier-mode))))
+(add-hook 'web-mode-hook #'(lambda ()
+                             (enable-minor-mode
+                              '("\\.tsx?\\'" . prettier-mode))))
 
 (use-package nvm)
 

@@ -414,6 +414,9 @@ https://gist.github.com/CodyReichert/9dbc8bd2a104780b64891d8736682cea
   (add-hook 'web-mode-hook #'(lambda ()
                                (enable-minor-mode
                                 '("\\.ts?\\'" . prettier-mode))))
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
+                                '("\\.tsx?\\'" . prettier-mode))))
 #+end_src
 
 *** Node
