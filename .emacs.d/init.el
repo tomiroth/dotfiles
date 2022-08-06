@@ -15,7 +15,6 @@
 
 (cd "~")
 (desktop-save-mode 1)
-
 (setq inhibit-startup-message t)
 
 (scroll-bar-mode -1)        ; Disable visible scrollbar
@@ -215,6 +214,33 @@
 
 (use-package transpose-frame)
 (global-set-key (kbd "C-M-y") 'transpose-frame)
+
+(use-package marginalia
+  :ensure t
+  :config
+  (add-to-list 'marginalia-command-categories '(counsel-projectile-find-file . file))
+
+  (marginalia-mode))
+
+(use-package embark
+  :ensure t
+
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
 
 (use-package swiper
   :commands (swiper swiper-all)
