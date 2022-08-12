@@ -639,3 +639,14 @@
   "Open a new instance of eshell."
   (interactive)
   (eshell 'N))
+
+(use-package engine-mode
+  :ensure t
+
+  :config
+  (engine-mode t))
+
+(defengine duckduckgo
+  "https://duckduckgo.com/?q=%s"
+  :keybinding "d"
+  :browser 'eww-browse-url)

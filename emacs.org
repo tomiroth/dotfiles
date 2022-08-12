@@ -853,3 +853,19 @@ Todo: Does this even work?
   (eshell 'N))
 #+end_src
 
+
+** Engine Mode
+#+begin_src emacs-lisp
+(use-package engine-mode
+  :ensure t
+
+  :config
+  (engine-mode t))
+#+end_src
+*** Duck Duck go
+#+begin_src emacs-lisp
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d"
+    :browser 'eww-browse-url)
+#+end_src
