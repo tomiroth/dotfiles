@@ -686,4 +686,5 @@
     "https://lucumr.pocoo.org/feed.atom"
     "https://hoverbear.org/rss.xml"
     "https://www.lpalmieri.com/rss.xml"
+    "https://www.rfleury.com/feed"
 ))
