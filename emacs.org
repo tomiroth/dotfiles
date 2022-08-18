@@ -856,3 +856,60 @@ Todo: Does this even work?
   (eshell 'N))
 #+end_src
 
+
+** Engine Mode
+#+begin_src emacs-lisp
+(use-package engine-mode
+  :ensure t
+
+  :config
+  (engine-mode t))
+#+end_src
+*** Duck Duck go
+#+begin_src emacs-lisp
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d"
+    :browser 'eww-browse-url)
+#+end_src
+
+** RSS Reader
+https://blog.feedspot.com/programming_rss_feeds/
+https://ultrasaurus.com/archives/
+#+begin_src emacs-lisp
+  (use-package elfeed
+  :bind
+      ("C-x w" . elfeed)
+  )
+  (setq elfeed-feeds
+      '(("http://nullprogram.com/feed/" blog emacs)
+      "https://planet.emacslife.com/atom.xml"
+      ("https://sachachua.com/blog/feed/" blog emacs)
+      "https://www.thecrazyprogrammer.com/feed"
+      ("https://www.sitepoint.com/sitepoint.rss" web)
+      "https://blog.jooq.org/feed/"
+      "https://medium.com/feed/@daveford"
+      "https://blog.codepen.io/feed/"
+      "https://davidwalsh.name/feed"
+      "https://www.raywenderlich.com/feed"
+      ("https://css-tricks.com/feed/" web)
+      "https://tympanus.net/codrops/feed/"
+      "https://medium.com/feed/better-programming"
+      "https://stackoverflow.blog/feed/"
+      "https://codesignal.com/feed/"
+      "https://alistapart.com/main/feed/"
+      "https://www.codingdojo.com/blog/feed"
+      "https://fueled.com/feed/"
+      "https://www.johndcook.com/blog/feed/"
+      "https://webdamn.com/feed/"
+      "https://www.codevscolor.com/rss.xml"
+      ("https://togglebit.io/atom.xml" streamer rust)
+      ("https://fasterthanli.me/index.xml" rust)
+      "https://domenicoluciani.com/feed.xml"
+      "https://lucumr.pocoo.org/feed.atom"
+      "https://hoverbear.org/rss.xml"
+      "https://www.lpalmieri.com/rss.xml"
+  ))
+
+
+#+end_src
