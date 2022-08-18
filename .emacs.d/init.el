@@ -4,7 +4,7 @@
 
 (global-unset-key (kbd "C-M-q"))
   (global-set-key (kbd "<f6>") (lambda() (interactive)(find-file "~/workspace/dotfiles/emacs.org")))
-  (global-set-key (kbd "<f7>") (lambda() (interactive)(dired "~/worg")))
+  (global-set-key (kbd "<f7>") (lambda() (interactive)(dired "/Users/tomelliott/Library/CloudStorage/Box-Box/worg")))
   (global-set-key (kbd "C-M-!") (lambda() (interactive)(delete-other-windows)))
   (global-set-key (kbd "C-M-@") (lambda() (interactive)(split-window-below)))
   (global-set-key (kbd "C-M-£") (lambda() (interactive)(split-window-right)))
