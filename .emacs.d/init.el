@@ -46,7 +46,7 @@
 
 (if (eq system-type 'windows-nt)
 (setq te-font-face "courier")
-(setq te-font-face "Fira Code Retina")
+(setq te-font-face "Fira Code")
 )
 (set-face-attribute 'default nil :font te-font-face :height runemacs/default-font-size)
 
@@ -299,6 +299,7 @@
   :commands (lsp lsp-deferred)
   :hook
   (lsp-mode . efs/lsp-mode-setup)
+  (php-mode . lsp)
   (web-mode . lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
@@ -308,6 +309,7 @@
   (setq lsp-enable-file-watchers nil)
   (lsp-enable-which-key-integration t)
   (lsp))
+(add-hook 'php-mode #'lsp)
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -424,6 +426,7 @@
 (use-package company
   :after lsp-mode
   :hook
+  (php-mode . lsp-deferred)
   (javascript-mode . lsp-deferred)
   (lsp-mode . company-mode)
   :bind (:map company-active-map

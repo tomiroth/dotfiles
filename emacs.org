@@ -17,7 +17,7 @@ title Tom's emacs config
 #+begin_src emacs-lisp
   (global-unset-key (kbd "C-M-q"))
     (global-set-key (kbd "<f6>") (lambda() (interactive)(find-file "~/workspace/dotfiles/emacs.org")))
-    (global-set-key (kbd "<f7>") (lambda() (interactive)(dired "~/worg")))
+    (global-set-key (kbd "<f7>") (lambda() (interactive)(dired "/Users/tomelliott/Library/CloudStorage/Box-Box/worg")))
     (global-set-key (kbd "C-M-!") (lambda() (interactive)(delete-other-windows)))
     (global-set-key (kbd "C-M-@") (lambda() (interactive)(split-window-below)))
     (global-set-key (kbd "C-M-£") (lambda() (interactive)(split-window-right)))
@@ -71,7 +71,7 @@ On mac uk keyboard hastag is atl-3.
 
   (if (eq system-type 'windows-nt)
   (setq te-font-face "courier")
-  (setq te-font-face "Fira Code Retina")
+  (setq te-font-face "Fira Code")
   )
   (set-face-attribute 'default nil :font te-font-face :height runemacs/default-font-size)
 
@@ -378,6 +378,7 @@ On mac uk keyboard hastag is atl-3.
     :commands (lsp lsp-deferred)
     :hook
     (lsp-mode . efs/lsp-mode-setup)
+    (php-mode . lsp)
     (web-mode . lsp-deferred)
     :init
     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
@@ -387,6 +388,7 @@ On mac uk keyboard hastag is atl-3.
     (setq lsp-enable-file-watchers nil)
     (lsp-enable-which-key-integration t)
     (lsp))
+  (add-hook 'php-mode #'lsp)
 
   (use-package lsp-ui
     :hook (lsp-mode . lsp-ui-mode)
@@ -551,6 +553,7 @@ https://robert.kra.hn/posts/2021-02-07_rust-with-emacs/
   (use-package company
     :after lsp-mode
     :hook
+    (php-mode . lsp-deferred)
     (javascript-mode . lsp-deferred)
     (lsp-mode . company-mode)
     :bind (:map company-active-map
