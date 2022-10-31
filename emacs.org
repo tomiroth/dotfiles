@@ -425,7 +425,6 @@ https://gist.github.com/CodyReichert/9dbc8bd2a104780b64891d8736682cea
            ("\\.ts\\'" . web-mode)
            ("\\.tsx\\'" . web-mode))
     :commands web-mode
-    :hook my-web-mode-hook
     :config
     (setq company-tooltip-align-annotations t)
     (setq web-mode-markup-indent-offset 2)
@@ -457,7 +456,6 @@ https://gist.github.com/CodyReichert/9dbc8bd2a104780b64891d8736682cea
 *** Prettier
 #+begin_src emacs-lisp
   (use-package prettier)
-  (add-hook 'web-mode-hook 'prettier-js-mode)
 #+end_src
 
 *** CSS

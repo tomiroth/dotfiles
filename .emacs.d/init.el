@@ -336,7 +336,6 @@
          ("\\.ts\\'" . web-mode)
          ("\\.tsx\\'" . web-mode))
   :commands web-mode
-  :hook my-web-mode-hook
   :config
   (setq company-tooltip-align-annotations t)
   (setq web-mode-markup-indent-offset 2)
@@ -363,7 +362,6 @@
 (use-package nvm)
 
 (use-package prettier)
-(add-hook 'web-mode-hook 'prettier-js-mode)
 
 (use-package css-mode
   :mode "\\.css\\'"
