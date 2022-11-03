@@ -685,4 +685,5 @@
     "https://hoverbear.org/rss.xml"
     "https://www.lpalmieri.com/rss.xml"
     "https://www.rfleury.com/feed"
+    "https://blueskyweb.org/rss.xml"
 ))
