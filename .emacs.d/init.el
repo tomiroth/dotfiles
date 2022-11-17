@@ -8,8 +8,8 @@
   (global-set-key (kbd "C-M-!") (lambda() (interactive)(delete-other-windows)))
   (global-set-key (kbd "C-M-@") (lambda() (interactive)(split-window-below)))
   (global-set-key (kbd "C-M-£") (lambda() (interactive)(split-window-right)))
-  (global-set-key (kbd "C-M-w") (lambda() (interactive)(switch-to-next-buffer)))
-  (global-set-key (kbd "C-M-q") (lambda() (interactive)(switch-to-prev-buffer)))
+  (global-set-key (kbd "C-M-j") (lambda() (interactive)(switch-to-next-buffer)))
+  (global-set-key (kbd "C-M-k") (lambda() (interactive)(switch-to-prev-buffer)))
 
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 
