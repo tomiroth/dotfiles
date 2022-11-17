@@ -105,7 +105,15 @@
   "([" '(insert-pair :which-key "[")
   "('" '(insert-pair :which-key "'")
   "(\"" '(insert-pair :which-key "\"")
+  "i" '(hydra-increment/body t :which-key "Increment/Decrement Number")
   )
+
+(defhydra hydra-increment (:color blue :columns 1)
+  ("i" increment-number-at-point "Increment" :color red)
+  ("u" decrement-number-at-point "Decrement":color red)
+  ("q"   nil "cancel" :color blue)
+  )
+
 (defhydra hydra-buffer (:color blue :columns 3)
   "
                 Buffers :
@@ -632,6 +640,26 @@
       (save-selected-window
         (other-window 1)
         (switch-to-buffer (other-buffer))))))
+
+(defun change-number-at-point (change increment)
+  (let ((number (number-at-point))
+        (point (point)))
+    (when number
+      (progn
+        (forward-word)
+        (search-backward (number-to-string number))
+        (replace-match (number-to-string (funcall change number increment)))
+        (goto-char point)))))
+
+(defun increment-number-at-point (&optional increment)
+  "Increment number at point like vim's C-a"
+  (interactive "p")
+  (change-number-at-point '+ (or increment 1)))
+
+(defun decrement-number-at-point (&optional increment)
+  "Decrement number at point like vim's C-x"
+  (interactive "p")
+  (change-number-at-point '- (or increment 1)))
 
 (use-package exec-path-from-shell
   :init (when (memq window-system '(mac ns x))

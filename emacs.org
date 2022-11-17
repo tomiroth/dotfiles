@@ -109,89 +109,97 @@ On mac uk keyboard hastag is atl-3.
 ** UI config
 *** General - Key mapping
 #+begin_src emacs-lisp
-(use-package general)
-(general-create-definer my-leader-def
-  ;; :prefix my-leader
-  ;; or without a variable
-  :prefix "SPC")
-  :(general-define-key
- :states '(normal visual insert emacs)
- :prefix "SPC"
- :non-normal-prefix "M-SPC"
-  "'" '(iterm-focus :which-key "iterm")
-  "?" '(iterm-goto-filedir-or-home :which-key "iterm - goto dir")
-  "/" '(counsel-ag :wich-key "ag")
-  "TAB" '(ivy-switch-buffer :which-key "prev buffer")
-  "." '(avy-goto-word-or-subword-1  :which-key "go to word")
-  "SPC" '(counsel-M-x :which-key "M-x")
-  "b" '(hydra-buffer/body t :which-key "Buffer")
-  "c" '(:ignore t :which-key "Comment")
-  "cl" '(comment-or-uncomment-region-or-line :which-key "comment line")
-  "w" '(hydra-window/body :which-key "Window")
-  "p" '(hydra-projectile/body t :which-key "Buffer")
-  "s" '(:ignore t :which-key "Swiper")
-  "sS" '(swiper-isearch :which-key "Search")
-  "ss" '(swiper-thing-at-point :which-key "Thing at Point")
-  "f" '(:ignore t :which-key "Code folder")
-  "ff" '(yafolding-toggle-element :which-key "Toggle Element")
-  "fa" '(yafolding-toggle-all :which-key "Toggle All")
-  "(" '(:ignore t :which-key "Insert Pair")
-  "((" '(insert-pair :which-key "(")
-  "({" '(insert-pair :which-key "{")
-  "([" '(insert-pair :which-key "[")
-  "('" '(insert-pair :which-key "'")
-  "(\"" '(insert-pair :which-key "\"")
-  )
-(defhydra hydra-buffer (:color blue :columns 3)
-  "
-                Buffers :
-  "
-  ("n" next-buffer "next" :color red)
-  ("b" ivy-switch-buffer "switch")
-  ("B" ibuffer "ibuffer")
-  ("p" previous-buffer "prev" :color red)
-  ("C-b" buffer-menu "buffer menu")
-  ("N" evil-buffer-new "new")
-  ("d" kill-this-buffer "delete" :color red)
-  ;; don't come back to previous buffer after delete
-  ("D" (progn (kill-this-buffer) (next-buffer)) "Delete" :color red)
-  ("s" save-buffer "save" :color red))
+  (use-package general)
+  (general-create-definer my-leader-def
+    ;; :prefix my-leader
+    ;; or without a variable
+    :prefix "SPC")
+    :(general-define-key
+   :states '(normal visual insert emacs)
+   :prefix "SPC"
+   :non-normal-prefix "M-SPC"
+    "'" '(iterm-focus :which-key "iterm")
+    "?" '(iterm-goto-filedir-or-home :which-key "iterm - goto dir")
+    "/" '(counsel-ag :wich-key "ag")
+    "TAB" '(ivy-switch-buffer :which-key "prev buffer")
+    "." '(avy-goto-word-or-subword-1  :which-key "go to word")
+    "SPC" '(counsel-M-x :which-key "M-x")
+    "b" '(hydra-buffer/body t :which-key "Buffer")
+    "c" '(:ignore t :which-key "Comment")
+    "cl" '(comment-or-uncomment-region-or-line :which-key "comment line")
+    "w" '(hydra-window/body :which-key "Window")
+    "p" '(hydra-projectile/body t :which-key "Buffer")
+    "s" '(:ignore t :which-key "Swiper")
+    "sS" '(swiper-isearch :which-key "Search")
+    "ss" '(swiper-thing-at-point :which-key "Thing at Point")
+    "f" '(:ignore t :which-key "Code folder")
+    "ff" '(yafolding-toggle-element :which-key "Toggle Element")
+    "fa" '(yafolding-toggle-all :which-key "Toggle All")
+    "(" '(:ignore t :which-key "Insert Pair")
+    "((" '(insert-pair :which-key "(")
+    "({" '(insert-pair :which-key "{")
+    "([" '(insert-pair :which-key "[")
+    "('" '(insert-pair :which-key "'")
+    "(\"" '(insert-pair :which-key "\"")
+    "i" '(hydra-increment/body t :which-key "Increment/Decrement Number")
+    )
+
+  (defhydra hydra-increment (:color blue :columns 1)
+    ("i" increment-number-at-point "Increment" :color red)
+    ("u" decrement-number-at-point "Decrement":color red)
+    ("q"   nil "cancel" :color blue)
+    )
+
+  (defhydra hydra-buffer (:color blue :columns 3)
+    "
+                  Buffers :
+    "
+    ("n" next-buffer "next" :color red)
+    ("b" ivy-switch-buffer "switch")
+    ("B" ibuffer "ibuffer")
+    ("p" previous-buffer "prev" :color red)
+    ("C-b" buffer-menu "buffer menu")
+    ("N" evil-buffer-new "new")
+    ("d" kill-this-buffer "delete" :color red)
+    ;; don't come back to previous buffer after delete
+    ("D" (progn (kill-this-buffer) (next-buffer)) "Delete" :color red)
+    ("s" save-buffer "save" :color red))
 
 
-(defhydra hydra-projectile
-  (:color teal :hint nil)
-  "
-     PROJECTILE: %(projectile-project-root)
+  (defhydra hydra-projectile
+    (:color teal :hint nil)
+    "
+       PROJECTILE: %(projectile-project-root)
 
-  ^Find File^        ^Search/Tags^        ^Buffers^       ^Cache^                    ^Project^
-  ^---------^        ^-----------^        ^-------^       ^-----^                    ^-------^
-  _f_: file          _a_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
-  _F_: file dwim     _g_: update gtags    _b_: switch to  _x_: remove known project  _v_: Magit
-  _C-f_: file pwd    _o_: multi-occur   _s-k_: Kill all   _X_: cleanup non-existing
-  _r_: recent file   ^ ^                  ^ ^             _z_: cache current
-  _d_: dir
-"
-  ("a"   projectile-ag)
-  ("b"   projectile-switch-to-buffer)
-  ("c"   projectile-invalidate-cache)
-  ("d"   projectile-find-dir)
-  ("f"   projectile-find-file)
-  ("F"   projectile-find-file-dwim)
-  ("C-f" projectile-find-file-in-directory)
-  ("g"   ggtags-update-tags)
-  ("s-g" ggtags-update-tags)
-  ("i"   projectile-ibuffer)
-  ("K"   projectile-kill-buffers)
-  ("s-k" projectile-kill-buffers)
-  ("m"   projectile-multi-occur)
-  ("o"   projectile-multi-occur)
-  ("p"   projectile-switch-project)
-  ("r"   projectile-recentf)
-  ("x"   projectile-remove-known-project)
-  ("X"   projectile-cleanup-known-projects)
-  ("z"   projectile-cache-current-file)
-  ("v"   projectile-vc)
-  ("q"   nil "cancel" :color blue))
+    ^Find File^        ^Search/Tags^        ^Buffers^       ^Cache^                    ^Project^
+    ^---------^        ^-----------^        ^-------^       ^-----^                    ^-------^
+    _f_: file          _a_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
+    _F_: file dwim     _g_: update gtags    _b_: switch to  _x_: remove known project  _v_: Magit
+    _C-f_: file pwd    _o_: multi-occur   _s-k_: Kill all   _X_: cleanup non-existing
+    _r_: recent file   ^ ^                  ^ ^             _z_: cache current
+    _d_: dir
+  "
+    ("a"   projectile-ag)
+    ("b"   projectile-switch-to-buffer)
+    ("c"   projectile-invalidate-cache)
+    ("d"   projectile-find-dir)
+    ("f"   projectile-find-file)
+    ("F"   projectile-find-file-dwim)
+    ("C-f" projectile-find-file-in-directory)
+    ("g"   ggtags-update-tags)
+    ("s-g" ggtags-update-tags)
+    ("i"   projectile-ibuffer)
+    ("K"   projectile-kill-buffers)
+    ("s-k" projectile-kill-buffers)
+    ("m"   projectile-multi-occur)
+    ("o"   projectile-multi-occur)
+    ("p"   projectile-switch-project)
+    ("r"   projectile-recentf)
+    ("x"   projectile-remove-known-project)
+    ("X"   projectile-cleanup-known-projects)
+    ("z"   projectile-cache-current-file)
+    ("v"   projectile-vc)
+    ("q"   nil "cancel" :color blue))
 #+end_src
 *** Evil Mode
 #+begin_src emacs-lisp
@@ -835,6 +843,30 @@ Todo: Does this even work?
           (switch-to-buffer (other-buffer))))))
 
 #+end_src
+*** Inc/Reduce numbers
+#+begin_src emacs-lisp
+
+  (defun change-number-at-point (change increment)
+    (let ((number (number-at-point))
+          (point (point)))
+      (when number
+        (progn
+          (forward-word)
+          (search-backward (number-to-string number))
+          (replace-match (number-to-string (funcall change number increment)))
+          (goto-char point)))))
+
+  (defun increment-number-at-point (&optional increment)
+    "Increment number at point like vim's C-a"
+    (interactive "p")
+    (change-number-at-point '+ (or increment 1)))
+
+  (defun decrement-number-at-point (&optional increment)
+    "Decrement number at point like vim's C-x"
+    (interactive "p")
+    (change-number-at-point '- (or increment 1)))
+
+    #+end_src
 
 ** Terminals
 
