@@ -21,8 +21,8 @@ title Tom's emacs config
     (global-set-key (kbd "C-M-!") (lambda() (interactive)(delete-other-windows)))
     (global-set-key (kbd "C-M-@") (lambda() (interactive)(split-window-below)))
     (global-set-key (kbd "C-M-£") (lambda() (interactive)(split-window-right)))
-    (global-set-key (kbd "C-M-j") (lambda() (interactive)(switch-to-next-buffer)))
-    (global-set-key (kbd "C-M-k") (lambda() (interactive)(switch-to-prev-buffer)))
+    (global-set-key (kbd "C-M-k") (lambda() (interactive)(switch-to-next-buffer)))
+    (global-set-key (kbd "C-M-j") (lambda() (interactive)(switch-to-prev-buffer)))
 #+end_src
 *** Key Setup
 On mac uk keyboard hastag is atl-3.
