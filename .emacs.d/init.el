@@ -299,40 +299,12 @@
 ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
 (use-package forge)
 
-(defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
-
-(use-package lsp-mode
-  :after projectile
-  :commands (lsp lsp-deferred)
-  :hook
-  (lsp-mode . efs/lsp-mode-setup)
-  (php-mode . lsp)
-  (web-mode . lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :bind (("C-M-G" . lsp-ui-peek-find-definitions))
-  :config
-  (setq lsp-intelephense-multi-root nil)
-  (setq lsp-enable-file-watchers nil)
-  (lsp-enable-which-key-integration t)
-  (lsp))
-(add-hook 'php-mode #'lsp)
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
-
-(use-package lsp-treemacs
-  :after lsp)
-
-(use-package dap-mode
-  :after lsp-mode
-  :bind (:map lsp-mode-map
-            ("C-c D" . dap-debug)
-            ("C-c d" . dap-hydra))
+(use-package eglot
+    :ensure t
+    :config
+        (add-hook 'php-mode-hook 'eglot-ensure)
+        (add-to-list 'eglot-server-programs '((web-mode) . ("typescript-language-server" "--stdio")))
+        ;; (add-to-list 'eglot-server-programs '(php-mode .. ("php" "/Users/tomelliott/.composer/vendor/felixfbecker/language-server/bin/php-language-server.php"))))
 )
 
 (use-package web-mode
@@ -370,13 +342,14 @@
 
 (use-package nvm)
 
-(use-package prettier)
+(use-package prettier
+:ensure t
+)
 
 (use-package css-mode
   :mode "\\.css\\'"
   :init
-  (setq css-indent-offset 2)
-  :hook (css-mode . lsp-deferred))
+  (setq css-indent-offset 2))
 
 (setq js-indent-level 2)
 
@@ -386,7 +359,6 @@
 
 (use-package php-mode
     :mode "\\.php\\'"
-    :hook (php-mode . lsp-deferred)
     :config
     (require 'dap-php)
     (dap-php-setup))
@@ -406,20 +378,8 @@
 (use-package rustic
     :ensure
     :bind (:map rustic-mode-map
-                ("M-j" . lsp-ui-imenu)
-                ("M-?" . lsp-find-references)
-                ("C-c C-c l" . flycheck-list-errors)
-                ("C-c C-c a" . lsp-execute-code-action)
-                ("C-c C-c r" . lsp-rename)
-                ("C-c C-c q" . lsp-workspace-restart)
-                ("C-c C-c Q" . lsp-workspace-shutdown)
-                ("C-c C-c s" . lsp-rust-analyzer-status))
+                ("C-c C-c l" . flycheck-list-errors))
     :config
-    ;; uncomment for less flashiness
-    ;; (setq lsp-eldoc-hook nil)
-    ;; (setq lsp-enable-symbol-highlighting nil)
-    ;; (setq lsp-signature-auto-activate nil)
-
     ;; comment to disable rustfmt on save
     (setq rustic-format-on-save t)
     (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
@@ -431,21 +391,20 @@
 (use-package flycheck :ensure)
 
 (use-package company
-  :after lsp-mode
-  :hook
-  (php-mode . lsp-deferred)
-  (javascript-mode . lsp-deferred)
-  (lsp-mode . company-mode)
-  :bind (:map company-active-map
-              ("s-<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("s-<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 3)
-  (company-idle-delay 0.5))
+    :ensure t
+    :init
+        (add-hook 'after-init-hook 'global-company-mode)
+    :bind (
+        :map company-active-map
+        ("s-<tab>" . company-complete-selection))
+            
+    :custom
+        (company-minimum-prefix-length 3)
+        (company-idle-delay 0.5)
+)
 
 (use-package company-box
-  :hook (company-mode . company-box-mode))
+:hook (company-mode . company-box-mode))
 
 (use-package restclient
   :ensure t
