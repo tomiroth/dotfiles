@@ -13,6 +13,10 @@
 
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 
+(defun te/before-setup ()
+  (select-frame (make-frame)))
+(add-hook 'ediff-before-setup-hook 'te/before-setup)
+
 (cd "~")
 (desktop-save-mode 1)
 (setq inhibit-startup-message t)

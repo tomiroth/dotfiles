@@ -30,6 +30,13 @@ On mac uk keyboard hastag is atl-3.
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 #+end_src
 
+*** Ediff
+**** Open new frame for ediff
+#+begin_src emacs-lisp
+(defun te/before-setup ()
+  (select-frame (make-frame)))
+(add-hook 'ediff-before-setup-hook 'te/before-setup)
+#+end_src
 ** Basic ui config
 
 #+begin_src emacs-lisp
