@@ -100,6 +100,8 @@
   "s" '(:ignore t :which-key "Swiper")
   "sS" '(swiper-isearch :which-key "Search")
   "ss" '(swiper-thing-at-point :which-key "Thing at Point")
+  "sA" '(swiper-all :which-key "Search")
+  "sa" '(swiper-all-thing-at-point :which-key "Thing at Point")
   "f" '(:ignore t :which-key "Code folder")
   "ff" '(yafolding-toggle-element :which-key "Toggle Element")
   "fa" '(yafolding-toggle-all :which-key "Toggle All")
@@ -349,6 +351,11 @@
 (use-package prettier
 :ensure t
 )
+(setq display-buffer-alist
+      '(("^\\*prettier errors\\*$"
+         (display-buffer-below-selected)
+         (side . left)
+         (window-height . 0.10))))
 
 (use-package css-mode
   :mode "\\.css\\'"
