@@ -283,6 +283,24 @@
                   nil
                   (window-parameters (mode-line-format . none)))))
 
+(use-package copilot
+         :straight (:host github :repo "zerolfx/copilot.el"
+:files ("dist" "*.el")
+  )
+        :ensure t
+        :config
+            (setq copilot-node-executable "/Users/tomelliott/.nvm/versions/node/v20.3.0/bin/node")
+            (add-hook 'prog-mode-hook 'copilot-mode)
+
+        :bind (:map copilot-mode-map
+            ("C-c C-c" . copilot-accept-completion-by-word)
+            ("C-n"     . copilot-next-completion)
+            ("C-p"     . copilot-previous-completion)
+            ("C-c C-a" . copilot-accept-completion)
+            ("C-c C-d" . copilot-dismiss-completion))
+
+        )
+
 (use-package swiper
   :commands (swiper swiper-all)
   :bind ("M-s s" . 'swiper-thing-at-point))
