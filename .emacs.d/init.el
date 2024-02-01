@@ -5,6 +5,7 @@
 (global-unset-key (kbd "C-M-q"))
   (global-set-key (kbd "<f6>") (lambda() (interactive)(find-file "~/workspace/dotfiles/emacs.org")))
   (global-set-key (kbd "<f7>") (lambda() (interactive)(dired "/Users/tomelliott/Library/CloudStorage/Box-Box/worg")))
+  (global-set-key (kbd "<f8>") (lambda() (interactive)(find-file "/Users/tomelliott/Library/CloudStorage/Box-Box/worg/Logger/Feb.org")))
   (global-set-key (kbd "C-M-!") (lambda() (interactive)(delete-other-windows)))
   (global-set-key (kbd "C-M-@") (lambda() (interactive)(split-window-below)))
   (global-set-key (kbd "C-M-£") (lambda() (interactive)(split-window-right)))
@@ -70,12 +71,6 @@
    (package-refresh-contents))
 )
 
-  ;; Initialize use-package on non-Linux platforms
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
-
-  (require 'use-package)
-  (setq use-package-always-ensure t)
 (defvar bootstrap-version)
   (let ((bootstrap-file
          (expand-file-name
@@ -104,98 +99,131 @@
   :straight t)
 
 (use-package general)
-(general-create-definer my-leader-def
-  ;; :prefix my-leader
-  ;; or without a variable
-  :prefix "SPC")
-  :(general-define-key
- :states '(normal visual insert emacs)
- :prefix "SPC"
- :non-normal-prefix "M-SPC"
-  "'" '(iterm-focus :which-key "iterm")
-  "?" '(iterm-goto-filedir-or-home :which-key "iterm - goto dir")
-  "/" '(counsel-ag :wich-key "ag")
-  "TAB" '(ivy-switch-buffer :which-key "prev buffer")
-  "." '(avy-goto-word-or-subword-1  :which-key "go to word")
-  "SPC" '(counsel-M-x :which-key "M-x")
-  "b" '(hydra-buffer/body t :which-key "Buffer")
-  "c" '(:ignore t :which-key "Comment")
-  "cl" '(comment-or-uncomment-region-or-line :which-key "comment line")
-  "w" '(hydra-window/body :which-key "Window")
-  "p" '(hydra-projectile/body t :which-key "Buffer")
-  "s" '(:ignore t :which-key "Swiper")
-  "sS" '(swiper-isearch :which-key "Search")
-  "ss" '(swiper-thing-at-point :which-key "Thing at Point")
-  "sA" '(swiper-all :which-key "Search")
-  "sa" '(swiper-all-thing-at-point :which-key "Thing at Point")
-  "f" '(:ignore t :which-key "Code folder")
-  "ff" '(yafolding-toggle-element :which-key "Toggle Element")
-  "fa" '(yafolding-toggle-all :which-key "Toggle All")
-  "(" '(:ignore t :which-key "Insert Pair")
-  "((" '(insert-pair :which-key "(")
-  "({" '(insert-pair :which-key "{")
-  "([" '(insert-pair :which-key "[")
-  "('" '(insert-pair :which-key "'")
-  "(\"" '(insert-pair :which-key "\"")
-  "i" '(hydra-increment/body t :which-key "Increment/Decrement Number")
-  )
+  (use-package hydra
+    :ensure t)
+    (general-create-definer my-leader-def
+      ;; :prefix my-leader
+      ;; or without a variable
+      :prefix "SPC")
+      :(general-define-key
+     :states '(normal visual insert emacs)
+     :prefix "SPC"
+     :non-normal-prefix "M-SPC"
+      "'" '(iterm-focus :which-key "iterm")
+      "?" '(iterm-goto-filedir-or-home :which-key "iterm - goto dir")
+      "/" '(counsel-ag :wich-key "ag")
+      "TAB" '(ivy-switch-buffer :which-key "prev buffer")
+      "." '(avy-goto-word-or-subword-1  :which-key "go to word")
+      "SPC" '(counsel-M-x :which-key "M-x")
+      "b" '(hydra-buffer/body t :which-key "Buffer")
+      "c" '(:ignore t :which-key "Comment")
+      "cl" '(comment-or-uncomment-region-or-line :which-key "comment line")
+      "w" '(hydra-window/body :which-key "Window")
+      "p" '(hydra-projectile/body t :which-key "Buffer")
+      "s" '(:ignore t :which-key "Swiper")
+      "sS" '(swiper-isearch :which-key "Search")
+      "ss" '(swiper-thing-at-point :which-key "Thing at Point")
+      "sA" '(swiper-all :which-key "Search")
+      "sa" '(swiper-all-thing-at-point :which-key "Thing at Point")
+      "f" '(:ignore t :which-key "Code folder")
+      "ff" '(yafolding-toggle-element :which-key "Toggle Element")
+      "fa" '(yafolding-toggle-all :which-key "Toggle All")
+      "(" '(:ignore t :which-key "Insert Pair")
+      "((" '(insert-pair :which-key "(")
+      "({" '(insert-pair :which-key "{")
+      "([" '(insert-pair :which-key "[")
+      "('" '(insert-pair :which-key "'")
+      "(\"" '(insert-pair :which-key "\"")
+      "i" '(hydra-increment/body t :which-key "Increment/Decrement Number")
+      "h" '(hydra-harpoon/body t :which-key "Harpoon")
+      )
 
-(defhydra hydra-increment (:color blue :columns 1)
-  ("i" increment-number-at-point "Increment" :color red)
-  ("u" decrement-number-at-point "Decrement":color red)
-  ("q"   nil "cancel" :color blue)
-  )
+    (defhydra hydra-increment (:color blue :columns 1)
+      ("i" increment-number-at-point "Increment" :color red)
+      ("u" decrement-number-at-point "Decrement":color red)
+      ("q"   nil "cancel" :color blue)
+      )
 
-(defhydra hydra-buffer (:color blue :columns 3)
+  (defhydra hydra-harpoon (:color blue :hint nil)
   "
-                Buffers :
-  "
-  ("n" next-buffer "next" :color red)
-  ("b" ivy-switch-buffer "switch")
-  ("B" ibuffer "ibuffer")
-  ("p" previous-buffer "prev" :color red)
-  ("C-b" buffer-menu "buffer menu")
-  ("N" evil-buffer-new "new")
-  ("d" kill-this-buffer "delete" :color red)
-  ;; don't come back to previous buffer after delete
-  ("D" (progn (kill-this-buffer) (next-buffer)) "Delete" :color red)
-  ("s" save-buffer "save" :color red))
-
-
-(defhydra hydra-projectile
-  (:color teal :hint nil)
-  "
-     PROJECTILE: %(projectile-project-root)
-
-  ^Find File^        ^Search/Tags^        ^Buffers^       ^Cache^                    ^Project^
-  ^---------^        ^-----------^        ^-------^       ^-----^                    ^-------^
-  _f_: file          _a_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
-  _F_: file dwim     _g_: update gtags    _b_: switch to  _x_: remove known project  _v_: Magit
-  _C-f_: file pwd    _o_: multi-occur   _s-k_: Kill all   _X_: cleanup non-existing
-  _r_: recent file   ^ ^                  ^ ^             _z_: cache current
-  _d_: dir
+^Harpoon Commands^
+-----------------------------------------
+_f_: Toggle File         _1_: Go to 1
+_h_: Toggle Quick Menu   _2_: Go to 2
+_c_: Clear               _3_: Go to 3
+_a_: Quick Menu Hydra    _4_: Go to 4
+_<return>_: Add File     _5_: Go to 5
+                         _6_: Go to 6
+                         _7_: Go to 7
+                         _8_: Go to 8
+                         _9_: Go to 9
 "
-  ("a"   projectile-ag)
-  ("b"   projectile-switch-to-buffer)
-  ("c"   projectile-invalidate-cache)
-  ("d"   projectile-find-dir)
-  ("f"   projectile-find-file)
-  ("F"   projectile-find-file-dwim)
-  ("C-f" projectile-find-file-in-directory)
-  ("g"   ggtags-update-tags)
-  ("s-g" ggtags-update-tags)
-  ("i"   projectile-ibuffer)
-  ("K"   projectile-kill-buffers)
-  ("s-k" projectile-kill-buffers)
-  ("m"   projectile-multi-occur)
-  ("o"   projectile-multi-occur)
-  ("p"   projectile-switch-project)
-  ("r"   projectile-recentf)
-  ("x"   projectile-remove-known-project)
-  ("X"   projectile-cleanup-known-projects)
-  ("z"   projectile-cache-current-file)
-  ("v"   projectile-vc)
-  ("q"   nil "cancel" :color blue))
+  ("f" harpoon-toggle-file)
+  ("h" harpoon-toggle-quick-menu)
+  ("c" harpoon-clear)
+  ("a" harpoon-quick-menu-hydra)
+  ("<return>" harpoon-add-file :exit t)
+  ("1" harpoon-go-to-1)
+  ("2" harpoon-go-to-2)
+  ("3" harpoon-go-to-3)
+  ("4" harpoon-go-to-4)
+  ("5" harpoon-go-to-5)
+  ("6" harpoon-go-to-6)
+  ("7" harpoon-go-to-7)
+  ("8" harpoon-go-to-8)
+  ("9" harpoon-go-to-9)
+  ("q" nil "quit" :color red))
+
+    (defhydra hydra-buffer (:color blue :columns 3)
+      "
+                    Buffers :
+      "
+      ("n" next-buffer "next" :color red)
+      ("b" ivy-switch-buffer "switch")
+      ("B" ibuffer "ibuffer")
+      ("p" previous-buffer "prev" :color red)
+      ("C-b" buffer-menu "buffer menu")
+      ("N" evil-buffer-new "new")
+      ("d" kill-this-buffer "delete" :color red)
+      ;; don't come back to previous buffer after delete
+      ("D" (progn (kill-this-buffer) (next-buffer)) "Delete" :color red)
+      ("s" save-buffer "save" :color red))
+
+
+    (defhydra hydra-projectile
+      (:color teal :hint nil)
+      "
+         PROJECTILE: %(projectile-project-root)
+
+      ^Find File^        ^Search/Tags^        ^Buffers^       ^Cache^                    ^Project^
+      ^---------^        ^-----------^        ^-------^       ^-----^                    ^-------^
+      _f_: file          _a_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
+      _F_: file dwim     _g_: update gtags    _b_: switch to  _x_: remove known project  _v_: Magit
+      _C-f_: file pwd    _o_: multi-occur   _s-k_: Kill all   _X_: cleanup non-existing
+      _r_: recent file   ^ ^                  ^ ^             _z_: cache current
+      _d_: dir
+    "
+      ("a"   projectile-ag)
+      ("b"   projectile-switch-to-buffer)
+      ("c"   projectile-invalidate-cache)
+      ("d"   projectile-find-dir)
+      ("f"   projectile-find-file)
+      ("F"   projectile-find-file-dwim)
+      ("C-f" projectile-find-file-in-directory)
+      ("g"   ggtags-update-tags)
+      ("s-g" ggtags-update-tags)
+      ("i"   projectile-ibuffer)
+      ("K"   projectile-kill-buffers)
+      ("s-k" projectile-kill-buffers)
+      ("m"   projectile-multi-occur)
+      ("o"   projectile-multi-occur)
+      ("p"   projectile-switch-project)
+      ("r"   projectile-recentf)
+      ("x"   projectile-remove-known-project)
+      ("X"   projectile-cleanup-known-projects)
+      ("z"   projectile-cache-current-file)
+      ("v"   projectile-vc)
+      ("q"   nil "cancel" :color blue))
 
 (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
 (setq evil-want-keybinding nil)
@@ -242,6 +270,9 @@
          ("C-x C-f" . counsel-find-file)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history)))
+
+(use-package avy
+    :ensure t);
 
 (use-package helpful
   :custom
@@ -382,24 +413,28 @@
           (funcall (cdr my-pair)))))
 (add-hook 'web-mode-hook #'(lambda ()
                              (enable-minor-mode
-                              '("\\.jsx?\\'" . prettier-mode))))
+                              '("\\.jsx?\\'" . prettier-js-mode))))
 (add-hook 'web-mode-hook #'(lambda ()
                              (enable-minor-mode
-                              '("\\.ts?\\'" . prettier-mode))))
+                              '("\\.ts?\\'" . prettier-js-mode))))
 (add-hook 'web-mode-hook #'(lambda ()
                              (enable-minor-mode
-                              '("\\.tsx?\\'" . prettier-mode))))
+                              '("\\.tsx?\\'" . prettier-js-mode))))
 
 (use-package nvm)
 
-(use-package prettier
-:ensure t
-)
 (setq display-buffer-alist
-      '(("^\\*prettier errors\\*$"
-         (display-buffer-below-selected)
-         (side . left)
-         (window-height . 0.10))))
+            '(("^\\*prettier errors\\*$"
+               (display-buffer-below-selected)
+               (side . left)
+               (window-height . 0.10))))
+
+  (use-package prettier-js
+    :ensure t
+    )
+(setq prettier-js-args '(
+  "--trailing-comma" "es5"
+))
 
 (use-package css-mode
   :mode "\\.css\\'"
@@ -414,9 +449,7 @@
 
 (use-package php-mode
     :mode "\\.php\\'"
-    :config
-    (require 'dap-php)
-    (dap-php-setup))
+    )
 
   (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
 
@@ -542,6 +575,26 @@
   ("C-=" . yafolding-toggle-element)
   ("C--" . yafolding-toggle-all))
 
+(use-package harpoon
+:ensure t
+:bind
+  ("C-c a" . harpoon-quick-menu-hydra)
+  ("C-c h <return>" . harpoon-add-file)
+
+  ("C-c h f" . harpoon-toggle-file)
+  ("C-c h h" . harpoon-toggle-quick-menu)
+  ("C-c h c" . harpoon-clear)
+  ("C-c h 1" . harpoon-go-to-1)
+  ("C-c h 2" . harpoon-go-to-2)
+  ("C-c h 3" . harpoon-go-to-3)
+  ("C-c h 4" . harpoon-go-to-4)
+  ("C-c h 5" . harpoon-go-to-5)
+  ("C-c h 6" . harpoon-go-to-6)
+  ("C-c h 7" . harpoon-go-to-7)
+  ("C-c h 8" . harpoon-go-to-8)
+  ("C-c h 9" . harpoon-go-to-9)
+  )
+
 ;; NOTE: The first time you load your configuration on a new machine, you'll
 ;; need to run the following command interactively so that mode line icons
 ;; display correctl:
@@ -554,7 +607,7 @@
   :custom ((doom-modeline-height 15)))
 
 (use-package doom-themes
-  :init (load-theme 'doom-city-lights t))
+  :init (load-theme 'doom-challenger-deep t))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
