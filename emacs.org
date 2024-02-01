@@ -384,6 +384,27 @@ _<return>_: Add File     _5_: Go to 5
                     (window-parameters (mode-line-format . none)))))
 #+end_src
 
+*** ISpell
+#+begin_src emacs-lisp
+;; Set Ispell as the default spell checker
+(setq-default ispell-program-name "aspell")
+
+;; Set a default dictionary (optional)
+(setq ispell-dictionary "english")
+
+;; Enable Flyspell in text modes
+(add-hook 'text-mode-hook 'flyspell-mode)
+
+;; Enable Flyspell in programming modes for comments and strings
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;; Enable Flyspell in programming modes for comments and strings
+(add-hook 'web-mode-hook 'flyspell-prog-mode)
+
+;; Configure Flyspell to behave more nicely
+(setq flyspell-issue-message-flag t) ;; Don't print messages for every word (optional)
+
+#+end_src
 ** Project Managment
 *** Co-pilot
 #+begin_src emacs-lisp

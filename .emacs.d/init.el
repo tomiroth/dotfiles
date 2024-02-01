@@ -314,6 +314,24 @@ _<return>_: Add File     _5_: Go to 5
                   nil
                   (window-parameters (mode-line-format . none)))))
 
+;; Set Ispell as the default spell checker
+(setq-default ispell-program-name "aspell")
+
+;; Set a default dictionary (optional)
+(setq ispell-dictionary "english")
+
+;; Enable Flyspell in text modes
+(add-hook 'text-mode-hook 'flyspell-mode)
+
+;; Enable Flyspell in programming modes for comments and strings
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;; Enable Flyspell in programming modes for comments and strings
+(add-hook 'web-mode-hook 'flyspell-prog-mode)
+
+;; Configure Flyspell to behave more nicely
+(setq flyspell-issue-message-flag t) ;; Don't print messages for every word (optional)
+
 (use-package copilot
          :straight (:host github :repo "zerolfx/copilot.el"
 :files ("dist" "*.el")
