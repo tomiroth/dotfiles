@@ -516,6 +516,9 @@ _<return>_: Add File     _5_: Go to 5
   :ensure t
   :mode (("\\.http\\'" . restclient-mode)))
 
+(use-package ztree
+:ensure t)
+
 (use-package yasnippet)
 (use-package yasnippet-snippets)
 (yas-global-mode)
