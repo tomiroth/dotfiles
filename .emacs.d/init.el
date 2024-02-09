@@ -332,6 +332,10 @@ _<return>_: Add File     _5_: Go to 5
 ;; Configure Flyspell to behave more nicely
 (setq flyspell-issue-message-flag t) ;; Don't print messages for every word (optional)
 
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+
 (use-package copilot
          :straight (:host github :repo "zerolfx/copilot.el"
 :files ("dist" "*.el")

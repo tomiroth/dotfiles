@@ -405,6 +405,12 @@ _<return>_: Add File     _5_: Go to 5
 (setq flyspell-issue-message-flag t) ;; Don't print messages for every word (optional)
 
 #+end_src
+*** 4 space tabs
+#+begin_src emacs-lisp
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+#+end_src
 ** Project Managment
 *** Co-pilot
 #+begin_src emacs-lisp
