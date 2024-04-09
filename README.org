@@ -1,0 +1,4 @@
+Set up home config using stow.
+#+begin_src bash
+cd ~/dotfiles;stow --dotfiles .;
+#+end_src
