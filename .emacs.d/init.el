@@ -5,7 +5,8 @@
 (global-unset-key (kbd "C-M-q"))
   (global-set-key (kbd "<f6>") (lambda() (interactive)(find-file "~/workspace/dotfiles/emacs.org")))
   (global-set-key (kbd "<f7>") (lambda() (interactive)(dired "/Users/tomelliott/Library/CloudStorage/Box-Box/worg")))
-  (global-set-key (kbd "<f8>") (lambda() (interactive)(find-file "/Users/tomelliott/Library/CloudStorage/Box-Box/worg/Logger/Feb.org")))
+  (global-set-key (kbd "<f8>") (lambda() (interactive)(find-file "/Users/tomelliott/Library/CloudStorage/Box-Box/worg/Logger/Apr.org")))
+  (global-set-key (kbd "<f9>") (lambda() (interactive)(find-file "/opt/homebrew/etc/php/8.3/php.ini")))
   (global-set-key (kbd "C-M-!") (lambda() (interactive)(delete-other-windows)))
   (global-set-key (kbd "C-M-@") (lambda() (interactive)(split-window-below)))
   (global-set-key (kbd "C-M-£") (lambda() (interactive)(split-window-right)))
@@ -490,9 +491,10 @@ _<return>_: Add File     _5_: Go to 5
     :bind (:map rustic-mode-map
                 ("C-c C-c l" . flycheck-list-errors))
     :config
-    ;; comment to disable rustfmt on save
     (setq rustic-format-on-save t)
-    (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+    (setq rustic-lsp-client 'eglot)
+    ;;(add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+    (add-hook 'rust-mode-hook 'eglot-ensure))
 
   (defun rk/rustic-mode-hook ()
     ;; so that run C-c C-c C-r works without having to confirm
