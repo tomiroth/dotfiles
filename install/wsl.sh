@@ -6,6 +6,7 @@ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/instal
 
 # Install Tmux Plugin Manager
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# Press <leader> I to install plug-ins.
 
 # Install Neovim.
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
