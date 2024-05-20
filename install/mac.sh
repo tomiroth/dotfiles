@@ -22,3 +22,5 @@ brew install --cask alacritty
 
 #Install GNU stow
 brew install stow
+
+brew install ripgrep
