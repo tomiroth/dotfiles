@@ -53,4 +53,5 @@ require('packer').startup(function(use)
 	}
 
 	use 'christoomey/vim-tmux-navigator'
+	use { "catppuccin/nvim", as = "catppuccin" }
 end)
