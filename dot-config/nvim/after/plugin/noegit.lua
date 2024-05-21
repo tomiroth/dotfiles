@@ -3,5 +3,6 @@ require('neogit').setup {
   integrations = {
     diffview = true  -- Requires 'sindrets/diffview.nvim'
   },
+  kind = "replace"  -- This will make Neogit open in the current buffer
 }
 
