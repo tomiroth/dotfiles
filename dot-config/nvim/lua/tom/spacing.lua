@@ -15,3 +15,17 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = {"typescript", "typescriptreact", "javascript", "javascriptreact"},
     callback = set_ts_indent
 })
+
+-- Prettier configuration
+vim.g['prettier#autoformat'] = 1
+vim.g['prettier#autoformat_config_present'] = 1
+
+
+-- Autoformat with Prettier on save
+vim.cmd([[
+augroup fmt
+  au!
+  au BufWritePre *.js,*.jsx,*.ts,*.tsx,*.json,*.css,*.scss,*.md,*.html,*.yaml,*.yml silent! execute ':Prettier'
+augroup END
+]])
+
