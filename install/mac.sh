@@ -24,3 +24,8 @@ brew install --cask alacritty
 brew install stow
 
 brew install ripgrep
+
+brea install tmux
+# Install Tmux Plugin Manager
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# Press <leader> I to install plug-ins.
