@@ -1,6 +1,9 @@
 # Install oh my zsh.
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# Install better find.
+sudo apt-get install fd-find
+
 # Install zsh plug in manager
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 

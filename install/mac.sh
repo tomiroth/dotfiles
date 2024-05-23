@@ -4,6 +4,9 @@
 # Install oh my zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# Install better find.
+brew install fd
+
 # Install zplug
 brew install zplug
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
