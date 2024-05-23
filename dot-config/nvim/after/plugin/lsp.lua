@@ -2,14 +2,27 @@ local lsp = require('lsp-zero')
 
 require('mason').setup()
 require('mason-lspconfig').setup({
-  ensure_installed = { 'tsserver', 'rust_analyzer', 'intelsense' }, 
+  ensure_installed = { 'tsserver', 'rust_analyzer', 'intelephense', 'lua_ls' },
   automatic_installation = true,     -- Automatically install language servers
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup({})
     end,
+    ['rust_analyzer'] = lsp.noop,
   }
 })
+
+
+vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+  pattern = {"*.rs"},
+  callback = function()
+    if vim.bo.filetype == "rust" then
+      vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
+    end
+  end,
+})
+
+
 -- Configure lsp-zero
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr}

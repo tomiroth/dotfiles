@@ -59,5 +59,8 @@ require('packer').startup(function(use)
       'prettier/vim-prettier',
       run = 'yarn install --frozen-lockfile --production' -- Ensures dependencies are installed correctly
     }
+    use {
+      'mrcjkb/rustaceanvim',
+    }
 
 end)
