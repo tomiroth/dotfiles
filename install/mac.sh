@@ -28,7 +28,10 @@ brew install stow
 
 brew install ripgrep
 
-brea install tmux
+brew install tmux
 # Install Tmux Plugin Manager
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Press <leader> I to install plug-ins.
+
+# Instal tldr - Cheat sheets
+brew install tldr
