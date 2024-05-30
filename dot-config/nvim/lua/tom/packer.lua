@@ -57,6 +57,7 @@ require('packer').startup(function(use)
     }
     use {
       'mrcjkb/rustaceanvim',
+      requires = {{"mfussenegger/nvim-dap"}}
     }
     use "nvim-lua/plenary.nvim"
     use {
@@ -67,4 +68,5 @@ require('packer').startup(function(use)
 
     use { "github/copilot.vim" }
 
+    use { "mfussenegger/nvim-dap" }
 end)

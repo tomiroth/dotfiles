@@ -1,5 +1,5 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>d", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>dd", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>pv", vim.cmd.Neogit)
 vim.keymap.set('n', '<leader>pd', "<cmd>lua require('tom.telescope').find_directories()<CR>")
 
@@ -36,3 +36,24 @@ vim.keymap.set("n", "<leader>j", function() harpoon:list():select(1) end)
 vim.keymap.set("n", "<leader>k", function() harpoon:list():select(2) end)
 vim.keymap.set("n", "<leader>l", function() harpoon:list():select(3) end)
 vim.keymap.set("n", "<leader>;", function() harpoon:list():select(4) end)
+
+-- Dap
+vim.keymap.set("n", "<leader>dc", ':lua require"dap".continue()<CR>')
+vim.keymap.set("n", "<leader>ds", ':lua require"dap".stop()<CR>')
+vim.keymap.set("n", "<leader>db", ':lua require"dap".toggle_breakpoint()<CR>')
+vim.keymap.set("n", "<leader>dn", ':lua require"dap".step_over()<CR>')
+vim.keymap.set("n", "<leader>di", ':lua require"dap".step_into()<CR>')
+vim.keymap.set("n", "<leader>do", ':lua require"dap".step_out()<CR>')
+vim.keymap.set("n", "<leader>dr", ':lua require"dap".repl.toggle()<CR>')
+
+local widgets = require("dap.ui.widgets")
+
+-- local function scopes_sidebar()
+--   local my_sidebar = widgets.sidebar(widgets.scopes)
+--   my_sidebar.open()
+-- end
+
+vim.keymap.set('n', '<leader>dv', function ()
+  local my_sidebar = widgets.sidebar(widgets.scopes)
+  my_sidebar.open()
+end)
