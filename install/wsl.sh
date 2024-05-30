@@ -4,6 +4,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Install better find.
 sudo apt-get install fd-find
 
+# Install better find.
+sudo apt-get install zoxide
+
 # Install zsh plug in manager
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 

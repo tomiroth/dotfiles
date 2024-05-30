@@ -7,6 +7,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Install better find.
 brew install fd
 
+# Install zoxide
+brew install zoxide
+
 # Install zplug
 brew install zplug
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
@@ -30,8 +33,10 @@ brew install ripgrep
 
 brew install tmux
 # Install Tmux Plugin Manager
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-# Press <leader> I to install plug-ins.
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm # Press <leader> I to install plug-ins.
+
+# Install tmux session manager
+brew install joshmedeski/sesh/sesh
 
 # Instal tldr - Cheat sheets
 brew install tldr

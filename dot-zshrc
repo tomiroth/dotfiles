@@ -139,3 +139,18 @@ source ~/.zshrc-local
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+source <(fzf --zsh)
+eval "$(zoxide init zsh)"
+
+# Bind Ctrl-T to fzf integration with zoxide
+z() {
+  if [[ $# -gt 0 ]]; then
+    zoxide query -- "$@"
+  else
+    zoxide query -i | fzf --height 40% --reverse --inline-info | awk '{print $2}'
+  fi
+}
+
+# Ctrl-T to trigger zoxide fzf integration
+bindkey '^T' z
