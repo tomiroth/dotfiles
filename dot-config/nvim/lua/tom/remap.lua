@@ -3,14 +3,38 @@ vim.keymap.set("n", "<leader>dd", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>pv", vim.cmd.Neogit)
 vim.keymap.set('n', '<leader>pd', "<cmd>lua require('tom.telescope').find_directories()<CR>")
 
--- Map <Leader>y to yank the current line to the system clipboard
-vim.api.nvim_set_keymap('n', '<Leader>yy', '"+yy', { noremap = true, silent = true })
--- Map <leader>y to yank current selecttion to system clipboard
-vim.api.nvim_set_keymap('v', '<Leader>yy', '"+y', { noremap = true, silent = true })
--- Map <Leader>y to paste the current line to the system clipboard
-vim.api.nvim_set_keymap('n', '<Leader>yp', '"+p', { noremap = true, silent = true })
--- Map <leader>y to paste current selecttion to system clipboard
-vim.api.nvim_set_keymap('v', '<Leader>yp', '"+p', { noremap = true, silent = true })
+
+--- To System Clipboard
+-- Yank to system clipboard in normal mode
+vim.api.nvim_set_keymap('n', 'y', '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'yy', '"+yy', { noremap = true, silent = true })
+
+-- Yank to system clipboard in visual mode
+vim.api.nvim_set_keymap('v', 'y', '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', 'Y', '"+y', { noremap = true, silent = true })
+
+-- Paste from system clipboard in normal mode
+vim.api.nvim_set_keymap('n', 'p', '"+p', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'P', '"+P', { noremap = true, silent = true })
+
+-- Paste from system clipboard in visual mode
+vim.api.nvim_set_keymap('v', 'p', '"+p', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', 'P', '"+P', { noremap = true, silent = true })
+
+-- Yank to system clipboard in operator-pending mode
+vim.api.nvim_set_keymap('x', 'y', '"+y', { noremap = true, silent = true })
+
+-- Delete to system clipboard in normal mode
+vim.api.nvim_set_keymap('n', 'd', '"+d', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'dd', '"+dd', { noremap = true, silent = true })
+
+-- Delete to system clipboard in visual mode
+vim.api.nvim_set_keymap('v', 'd', '"+d', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', 'D', '"+d', { noremap = true, silent = true })
+
+-- Delete to system clipboard in operator-pending mode
+vim.api.nvim_set_keymap('x', 'd', '"+d', { noremap = true, silent = true })
+---
 
 -- Todo: Work out how to use the hyper key for binding.
 vim.keymap.set("n", "<Esc>[91;10u", vim.cmd.Neogit)
