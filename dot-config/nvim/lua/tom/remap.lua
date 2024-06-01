@@ -2,7 +2,27 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>dd", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>pv", vim.cmd.Neogit)
 vim.keymap.set('n', '<leader>pd', "<cmd>lua require('tom.telescope').find_directories()<CR>")
+vim.api.nvim_set_keymap('n', '<leader>pF', ':lua require("telescope.builtin").find_files({ cwd = vim.fn.expand("%:p:h") })<CR>', { noremap = true, silent = true })
 
+-- Quit buffer
+vim.api.nvim_set_keymap('n', '<leader>qq', ':q<CR>', { noremap = true, silent = true })
+-- Wrtie and quit buffer
+vim.api.nvim_set_keymap('n', '<leader>wq', ':wq<CR>', { noremap = true, silent = true })
+-- Go to normal mode and save
+vim.api.nvim_set_keymap('i', 'jf', '<Esc>:w<CR>', { noremap = false, silent = true })
+-- Go to normal mode 'jj' and 'jk'
+vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
+
+-- Search and replace under word.
+vim.api.nvim_set_keymap('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>//g<Left><Left>', { noremap = true, silent = true })
+
+-- Map Ctrl-x Ctrl-s to save the file from insert mode
+vim.api.nvim_set_keymap('i', '<C-x><C-s>', '<Esc>:w<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-x><C-s>', ':w<CR>', { noremap = true, silent = true })
+
+-- relative line numbers toggle 
+vim.api.nvim_set_keymap('n', '<leader>n', ':set relativenumber!<CR>', { noremap = true, silent = true })
 
 --- To System Clipboard
 -- Yank to system clipboard in normal mode
