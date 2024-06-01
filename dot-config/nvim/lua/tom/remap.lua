@@ -80,25 +80,25 @@ local widgets = require("dap.ui.widgets")
 local wk = require("which-key")
 -- Dap
 wk.register({
-  d = {
-    d = {":Ex <CR>", "Open Directory"},
-    c = {":lua require'dap'.continue()<CR>", "Dap Continue"},
-    s = {":lua require'dap'.stop()<CR>", "Dap Stop"},
-    b = {":lua require'dap'.toggle_breakpoint()<CR>", "Dap Toggle Breakpoint"},
-    B = {":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", "Dap Set Breakpoint"},
-    n = {":lua require'dap'.step_over()<CR>", "Dap Step Over"},
-    i = {":lua require'dap'.step_into()<CR>", "Dap Step Into"},
-    o = {":lua require'dap'.step_out()<CR>", "Dap Step Out"},
-    r = {":lua require'dap'.repl.open()<CR>", "Dap Open Repl"},
-    v = { function() require('dapui').toggle() end, "Dap Toggle UI" },
+ d = {
+   d = {":Ex <CR>", "Open Directory"},
+   c = {":lua require'dap'.continue()<CR>", "Dap Continue"},
+   s = {":lua require'dap'.stop()<CR>", "Dap Stop"},
+   b = {":lua require'dap'.toggle_breakpoint()<CR>", "Dap Toggle Breakpoint"},
+   B = {":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", "Dap Set Breakpoint"},
+   n = {":lua require'dap'.step_over()<CR>", "Dap Step Over"},
+   i = {":lua require'dap'.step_into()<CR>", "Dap Step Into"},
+   o = {":lua require'dap'.step_out()<CR>", "Dap Step Out"},
+   r = {":lua require'dap'.repl.open()<CR>", "Dap Open Repl"},
+   v = { function() require('dapui').toggle() end, "Dap Toggle UI" },
 
 
-    j = {vim.diagnostic.goto_next, "Diagnostics Next"},
-    k = {vim.diagnostic.goto_prev, "Diagnostics Previous"},
-    f = { "<cmd>Telescope diagnostics<cr>", "Diagnostics List" },
+   j = {vim.diagnostic.goto_next, "Diagnostics Next"},
+   k = {vim.diagnostic.goto_prev, "Diagnostics Previous"},
+   f = { "<cmd>Telescope diagnostics<cr>", "Diagnostics List" },
 
-    ["1"] = "which_key_ignore",  -- special label to hide it in the popup
-  },
+   ["1"] = "which_key_ignore",  -- special label to hide it in the popup
+ },
 }, { prefix = "<leader>" })
 
 wk.register(mappings, opts)
