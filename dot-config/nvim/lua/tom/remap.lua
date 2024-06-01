@@ -61,14 +61,8 @@ vim.keymap.set("n", "<leader>k", function() harpoon:list():select(2) end)
 vim.keymap.set("n", "<leader>l", function() harpoon:list():select(3) end)
 vim.keymap.set("n", "<leader>;", function() harpoon:list():select(4) end)
 
--- Dap
-vim.keymap.set("n", "<leader>dc", ':lua require"dap".continue()<CR>')
-vim.keymap.set("n", "<leader>ds", ':lua require"dap".stop()<CR>')
-vim.keymap.set("n", "<leader>db", ':lua require"dap".toggle_breakpoint()<CR>')
-vim.keymap.set("n", "<leader>dn", ':lua require"dap".step_over()<CR>')
-vim.keymap.set("n", "<leader>di", ':lua require"dap".step_into()<CR>')
-vim.keymap.set("n", "<leader>do", ':lua require"dap".step_out()<CR>')
-vim.keymap.set("n", "<leader>dr", ':lua require"dap".repl.toggle()<CR>')
+
+
 
 local widgets = require("dap.ui.widgets")
 
@@ -77,7 +71,34 @@ local widgets = require("dap.ui.widgets")
 --   my_sidebar.open()
 -- end
 
-vim.keymap.set('n', '<leader>dv', function ()
-  local my_sidebar = widgets.sidebar(widgets.scopes)
-  my_sidebar.open()
-end)
+-- vim.keymap.set('n', '<leader>dv', function ()
+--   local my_sidebar = widgets.sidebar(widgets.scopes)
+--   my_sidebar.open()
+-- end)
+
+
+local wk = require("which-key")
+-- Dap
+wk.register({
+  d = {
+    d = {":Ex <CR>", "Open Directory"},
+    c = {":lua require'dap'.continue()<CR>", "Dap Continue"},
+    s = {":lua require'dap'.stop()<CR>", "Dap Stop"},
+    b = {":lua require'dap'.toggle_breakpoint()<CR>", "Dap Toggle Breakpoint"},
+    B = {":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", "Dap Set Breakpoint"},
+    n = {":lua require'dap'.step_over()<CR>", "Dap Step Over"},
+    i = {":lua require'dap'.step_into()<CR>", "Dap Step Into"},
+    o = {":lua require'dap'.step_out()<CR>", "Dap Step Out"},
+    r = {":lua require'dap'.repl.open()<CR>", "Dap Open Repl"},
+    v = { function() require('dapui').toggle() end, "Dap Toggle UI" },
+
+
+    j = {vim.diagnostic.goto_next, "Diagnostics Next"},
+    k = {vim.diagnostic.goto_prev, "Diagnostics Previous"},
+    f = { "<cmd>Telescope diagnostics<cr>", "Diagnostics List" },
+
+    ["1"] = "which_key_ignore",  -- special label to hide it in the popup
+  },
+}, { prefix = "<leader>" })
+
+wk.register(mappings, opts)

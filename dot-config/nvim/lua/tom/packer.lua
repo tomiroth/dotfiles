@@ -69,4 +69,14 @@ require('packer').startup(function(use)
     use { "github/copilot.vim" }
 
     use { "mfussenegger/nvim-dap" }
+
+    use {
+      "folke/which-key.nvim",
+      config = function()
+        vim.o.timeout = true
+        vim.o.timeoutlen = 300
+        require("which-key").setup {}
+      end
+}
+
 end)
