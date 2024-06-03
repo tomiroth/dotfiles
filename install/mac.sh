@@ -7,6 +7,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Install better find.
 brew install fd
 
+# Install fuzyy finder.
+brew install fzf
+
 # Install zoxide
 brew install zoxide
 
