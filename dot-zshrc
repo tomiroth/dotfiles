@@ -130,6 +130,9 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
 
+# Go to normal mode when pressing jk.
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+
 # Aliases
 alias ll='ls -lah'
 alias vi='nvim'
