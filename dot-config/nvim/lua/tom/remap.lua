@@ -115,6 +115,7 @@ wk.register({
 
    j = {vim.diagnostic.goto_next, "Diagnostics Next"},
    k = {vim.diagnostic.goto_prev, "Diagnostics Previous"},
+   a = {vim.lsp.buf.code_action, "Diagnostics Previous"},
    f = { "<cmd>Telescope diagnostics<cr>", "Diagnostics List" },
 
    ["1"] = "which_key_ignore",  -- special label to hide it in the popup
