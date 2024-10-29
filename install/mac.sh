@@ -43,3 +43,6 @@ brew install joshmedeski/sesh/sesh
 
 # Instal tldr - Cheat sheets
 brew install tldr
+
+# Cli json viewer.
+brew install jless
