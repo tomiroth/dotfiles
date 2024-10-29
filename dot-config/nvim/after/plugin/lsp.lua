@@ -31,12 +31,12 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', '<leader>vws', vim.lsp.buf.workspace_symbol, opts)
-  vim.keymap.set('n', '<leader>vd', vim.diagnostic.open_float, opts)
+  vim.keymap.set('n', '<leader>vs', vim.lsp.buf.workspace_symbol, {buffer = bufnr, desc = "Query symbols"})
+  vim.keymap.set('n', '<leader>vd', vim.diagnostic.open_float, {buffer = bufnr, desc = "Diagnostic"})
 
-  vim.keymap.set('n', '<leader>vca', vim.lsp.buf.code_action, opts)
-  vim.keymap.set('n', '<leader>vrr', vim.lsp.buf.references, opts)
-  vim.keymap.set('n', '<leader>vrn', vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', '<leader>va', vim.lsp.buf.code_action, {buffer = bufnr, desc = "Code actions"})
+  vim.keymap.set('n', '<leader>vr', vim.lsp.buf.references, {buffer = bufnr, desc = "References"})
+  vim.keymap.set('n', '<leader>vn', vim.lsp.buf.rename, {buffer = bufnr, desc = "References"})
 
-  vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, opts)
+  vim.keymap.set('i', '<C-H>', vim.lsp.buf.signature_help, opts)
 end)
