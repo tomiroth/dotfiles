@@ -3,6 +3,8 @@ vim.keymap.set("n", "<leader>dd", vim.cmd.Ex, {desc = "Explore Directory of curr
 vim.keymap.set("n", "<leader>pv", vim.cmd.Neogit, {desc = "Neo Git"})
 vim.keymap.set('n', '<leader>pd', "<cmd>lua require('tom.telescope').find_directories()<CR>", {desc = "Find Directories"})
 vim.api.nvim_set_keymap('n', '<leader>pF', ':lua require("telescope.builtin").find_files({ cwd = vim.fn.expand("%:p:h") })<CR>', { noremap = true, silent = true, desc = "Find Files Current Directory" })
+vim.api.nvim_set_keymap('n', '<leader>vS', ':Telescope lsp_document_symbols<CR>', { noremap = true, silent = true, desc = "List File Symbols" })
+vim.api.nvim_set_keymap('n', '<leader>vm', ':Telescope lsp_document_symbols symbols=method<CR>', { noremap = true, silent = true, desc = "List File Symbols" })
 -- Quit buffer
 vim.api.nvim_set_keymap('n', '<leader>qq', ':q<CR>', { noremap = true, silent = true, desc = "Quit buffer" })
 -- Wrtie and quit buffer
