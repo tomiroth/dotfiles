@@ -78,5 +78,6 @@ require('packer').startup(function(use)
         require("which-key").setup {}
       end
 }
+    use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async'}
 
 end)
