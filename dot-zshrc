@@ -136,9 +136,12 @@ ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 # Aliases
 alias ll='ls -lah'
 alias vi='nvim'
-alias v='nvim .'
+alias v='nvm use 18; nvim .'
 #Clear terminal and history
 alias tpurge="clear && printf '\e[3J'"
+
+# Load new tmux session on current directory
+alias tn='tmux new -s $(basename "$PWD")'
 
 source ~/.zshrc-local
 
