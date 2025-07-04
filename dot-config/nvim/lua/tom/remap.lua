@@ -57,6 +57,11 @@ vim.api.nvim_set_keymap('v', 'D', '"+d', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('x', 'd', '"+d', { noremap = true, silent = true })
 ---
 
+vim.keymap.set("n", "<leader>xx", function()
+    vim.cmd('source')
+    vim.notify("Sourced current Lua file", vim.log.levels.INFO)
+end, { desc = "Source current Lua file", noremap = true, silent = true })
+
 -- Buffer navigation
 vim.keymap.set("n", "<leader>bj", vim.cmd.bn, {desc = "Next Buffer"})
 vim.keymap.set("n", "<leader>bk", vim.cmd.bp, {desc = "Previous Buffer"})
