@@ -14,6 +14,10 @@ vim.api.nvim_set_keymap('i', 'jf', '<Esc>:w<CR>', { noremap = false, silent = tr
 -- Go to normal mode 'jj' and 'jk'
 vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
+--
+-- centers search results and opens fold if needed
+vim.api.nvim_set_keymap('n', 'n', 'nzzzv', { noremap = true, silent = true, desc = "Next Search" })
+vim.api.nvim_set_keymap('n', 'N', 'Nzzzv', { noremap = true, silent = true, desc = "Previous Search" })
 
 -- Search and replace under word.
 vim.api.nvim_set_keymap('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>//g<Left><Left>', { noremap = true, silent = true })
