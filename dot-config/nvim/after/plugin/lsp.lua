@@ -33,6 +33,12 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
   vim.keymap.set('n', '<leader>vs', vim.lsp.buf.workspace_symbol, {buffer = bufnr, desc = "Query symbols"})
   vim.keymap.set('n', '<leader>vd', vim.diagnostic.open_float, {buffer = bufnr, desc = "Diagnostic"})
+  vim.keymap.set('n', '<leader>vD',function()
+    require("telescope.builtin").diagnostics({
+      bufnr = 0,            -- current buffer only
+      sort_by = "severity", -- put errors on top (optional)
+    })
+  end, {buffer = bufnr, desc = "Telescope Dagnostic"})
 
   vim.keymap.set('n', '<leader>va', vim.lsp.buf.code_action, {buffer = bufnr, desc = "Code actions"})
   vim.keymap.set('n', '<leader>vr', vim.lsp.buf.references, {buffer = bufnr, desc = "References"})
