@@ -54,8 +54,18 @@ require("noice").setup({
 
 vim.api.nvim_create_autocmd("BufWritePost", {
   callback = function(args)
+    -- Skip Git commit messages
+    if vim.bo[args.buf].filetype == "gitcommit" then
+      return
+    end
+
+    -- Otherwise notify
     local filename = vim.fn.fnamemodify(args.file, ":~:.")
-    require("noice").notify("Saved: " .. filename, "info", { title = "File Saved" })
+    require("noice").notify(
+      "💾 Saved: " .. filename,
+      "info",
+      { title = "File Saved" }
+    )
   end,
 })
 
