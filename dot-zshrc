@@ -136,7 +136,7 @@ ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 # Aliases
 alias ll='ls -lah'
 alias vi='nvim'
-alias v='nvm use 18; nvim .'
+alias v='nvm use 20; nvim .'
 #Clear terminal and history
 alias tpurge="clear && printf '\e[3J'"
 

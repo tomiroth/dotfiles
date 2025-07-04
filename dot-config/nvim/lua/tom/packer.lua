@@ -77,7 +77,15 @@ require('packer').startup(function(use)
         vim.o.timeoutlen = 300
         require("which-key").setup {}
       end
-}
+    }
+
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async'}
 
+    use {
+        "folke/noice.nvim",
+        requires = {
+            {"MunifTanjim/nui.nvim"},
+        }
+
+    }
 end)
