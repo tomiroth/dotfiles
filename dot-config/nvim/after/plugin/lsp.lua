@@ -2,13 +2,32 @@ local lsp = require('lsp-zero')
 
 require('mason').setup()
 require('mason-lspconfig').setup({
-  ensure_installed = { 'rust_analyzer', 'intelephense', 'lua_ls' },
+  ensure_installed = { 'rust_analyzer', 'intelephense', 'lua_ls', 'zls' },
   automatic_installation = true,     -- Automatically install language servers
   handlers = {
     function(server_name)
-      require('lspconfig')[server_name].setup({})
+      require('lspconfig')[server_name].setup()
     end,
+
     ['rust_analyzer'] = lsp.noop,
+    ['zls'] = function()
+     local lspconfig = require("lspconfig")
+        lspconfig.zls.setup({
+            root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+            cmd = {"/home/tom/zls/zig-out/bin/zls"},
+            cmd_env = {
+              ZIG_PATH = '/snap/bin/zig',
+            },
+            settings = {
+                zls = {
+                    enable_inlay_hints = true,
+                    enable_snippets = true,
+                    warn_style = true,
+                },
+            },
+        })
+    end,
+
   }
 })
 
