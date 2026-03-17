@@ -67,6 +67,16 @@ vim.keymap.set("n", "<leader>bj", vim.cmd.bn, {desc = "Next Buffer"})
 vim.keymap.set("n", "<leader>bk", vim.cmd.bp, {desc = "Previous Buffer"})
 vim.keymap.set("n", "<leader>bx", vim.cmd.bd, {desc = "Delete Buffer"})
 
+-- Quickfix navigation
+local opts = { noremap = true, silent = true }
+vim.api.nvim_set_keymap('n', '<leader>qj', ':cnext<CR>', opts)     -- Next quickfix item
+vim.api.nvim_set_keymap('n', '<leader>qk', ':cprev<CR>', opts)     -- Previous quickfix item
+vim.api.nvim_set_keymap('n', '<leader>qo', ':copen<CR>', opts)   -- Open quickfix
+vim.api.nvim_set_keymap('n', '<leader>qc', ':cclose<CR>', opts)  -- Close quickfix
+vim.api.nvim_set_keymap('n', '<leader>qf', ':cfirst<CR>', opts)  -- First item
+vim.api.nvim_set_keymap('n', '<leader>ql', ':clast<CR>', opts)   -- Last item
+vim.api.nvim_set_keymap('n', '<leader>qq', ':cwindow<CR>', opts) -- Toggle open if items exist
+
 -- Harpoon
 local harpoon = require("harpoon")
 
