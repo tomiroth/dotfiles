@@ -5,11 +5,9 @@ require("noice").setup({
   views = {
     mini = {
       backend = "mini",
-      align = "message-left",
       timeout = 5000, -- 5 seconds
       position = {
-        row = -1,
-        col = 0,
+        row = 0,
       },
       size = {
         width = "auto",
