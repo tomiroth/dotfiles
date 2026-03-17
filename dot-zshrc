@@ -90,12 +90,7 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -136,7 +131,7 @@ ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 # Aliases
 alias ll='ls -lah'
 alias vi='nvim'
-alias v='nvm use 20; nvim .'
+alias v='nvim .'
 #Clear terminal and history
 alias tpurge="clear && printf '\e[3J'"
 
@@ -162,3 +157,6 @@ z() {
 
 # Ctrl-T to trigger zoxide fzf integration
 bindkey '^T' z
+
+# Created by `pipx` on 2025-07-10 11:20:07
+export PATH="$PATH:/Users/tomelliott/.local/bin"

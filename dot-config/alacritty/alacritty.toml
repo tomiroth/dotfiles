@@ -4,8 +4,6 @@ TERM = "xterm-256color"
 padding.x = 10
 padding.y = 10
 
-opacity = 0.85
-
 option_as_alt = "Both"
 
 startup_mode = "Maximized"
