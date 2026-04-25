@@ -6,6 +6,7 @@ vim.pack.add({
   --Dependancies
   { src = gh('nvim-lua/plenary.nvim') },
   { src = gh('sindrets/diffview.nvim') },
+  { src = gh('MunifTanjim/nui.nvim') },
 
   --Packages
   { src = gh('nvim-telescope/telescope.nvim') }, -- plenary
@@ -13,6 +14,7 @@ vim.pack.add({
   { src = gh('ThePrimeagen/harpoon'), version = '87b1a3506211538f460786c23f98ec63ad9af4e5' }, -- plenary
   { src = gh('folke/which-key.nvim') },
   { src = gh('neogitorg/neogit') }, --planary, telescope
+  { src = gh('folke/noice.nvim') }, --nui
 
   --
   -- -- Specify plugin's name (here the plugin will be called "plugin1"
