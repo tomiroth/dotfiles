@@ -171,7 +171,7 @@ ss() {
         paru -Ss "$@"
         echo -e "\n--- Flatpak ---"
         flatpak search "$@" 
-    if [ "$(uname -s)" = "Darwin" ]; then
+    elif [ "$(uname -s)" = "Darwin" ]; then
         echo "--- Searching brew ---"
         brew search "$@"
     fi

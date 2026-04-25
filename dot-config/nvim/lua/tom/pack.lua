@@ -1,6 +1,4 @@
-
 local gh = function(x) return 'https://github.com/' .. x end
-
 
 vim.pack.add({
   --Dependancies
@@ -9,6 +7,7 @@ vim.pack.add({
   { src = gh('MunifTanjim/nui.nvim') },
 
   --Packages
+  { src = gh('0Risotto/rainbow12') },
   { src = gh('nvim-telescope/telescope.nvim') }, -- plenary
   { src = gh('christoomey/vim-tmux-navigator') }, -- plenary
   { src = gh('ThePrimeagen/harpoon'), version = '87b1a3506211538f460786c23f98ec63ad9af4e5' }, -- plenary
