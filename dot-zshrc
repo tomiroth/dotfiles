@@ -160,3 +160,19 @@ bindkey '^T' z
 
 # Created by `pipx` on 2025-07-10 11:20:07
 export PATH="$PATH:/Users/tomelliott/.local/bin"
+
+ss() {
+    if [ "$(uname -s)" = "Linux" ]; then
+        echo "--- Official Repositories ---"
+        pacman -Ss "$@"
+        echo -e "\n--- Arch User Repository ---"
+        yay -Ssa "$@"
+        echo -e "\n--- Paru ---"
+        paru -Ss "$@"
+        echo -e "\n--- Flatpak ---"
+        flatpak search "$@" 
+    if [ "$(uname -s)" = "Darwin" ]; then
+        echo "--- Searching brew ---"
+        brew search "$@"
+    fi
+}
