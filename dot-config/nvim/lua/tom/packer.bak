@@ -3,13 +3,7 @@ vim.cmd [[packadd packer.nvim]]
 
 -- Use packer to manage plugins
 require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'  -- Package manager
 
-  use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.6',
-  -- or                            , branch = '0.1.x',
-    requires = { {'nvim-lua/plenary.nvim'} }
-  }
 
   use( 'nvim-treesitter/nvim-treesitter', {run= ':TSUpdate'})
 
@@ -29,26 +23,12 @@ require('packer').startup(function(use)
 	    {'L3MON4D3/LuaSnip'},
 	  }
 	}
-	use {
-	  'NeogitOrg/neogit',
-	  requires = {
-	    { 'nvim-lua/plenary.nvim' },         -- required
-	    { 'sindrets/diffview.nvim', opt = true },        -- optional - Diff integration
-
-	    -- Only one of these is needed, not both.
-	    { 'nvim-telescope/telescope.nvim', opt = true }, -- optional
-	    { 'ibhagwan/fzf-lua', opt = true },              -- optional
-	  },
-	  config = true
-	}
-
 
 	use {
 	  'phaazon/hop.nvim',
 	  branch = 'v2', -- optional but strongly recommended
 	}
 
-	use 'christoomey/vim-tmux-navigator'
 	use { "catppuccin/nvim", as = "catppuccin" }
 
     use {
@@ -59,7 +39,6 @@ require('packer').startup(function(use)
       'mrcjkb/rustaceanvim',
       requires = {{"mfussenegger/nvim-dap"}}
     }
-    use "nvim-lua/plenary.nvim"
     use {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
@@ -69,15 +48,6 @@ require('packer').startup(function(use)
     use { "github/copilot.vim" }
 
     use { "mfussenegger/nvim-dap" }
-
-    use {
-      "folke/which-key.nvim",
-      config = function()
-        vim.o.timeout = true
-        vim.o.timeoutlen = 300
-        require("which-key").setup {}
-      end
-    }
 
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async'}
 

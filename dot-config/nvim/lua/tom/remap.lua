@@ -1,14 +1,8 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>dd", vim.cmd.Ex, {desc = "Explore Directory of current buffer"})
 vim.keymap.set("n", "<leader>pv", vim.cmd.Neogit, {desc = "Neo Git"})
-vim.keymap.set('n', '<leader>pd', "<cmd>lua require('tom.telescope').find_directories()<CR>", {desc = "Find Directories"})
-vim.api.nvim_set_keymap('n', '<leader>pF', ':lua require("telescope.builtin").find_files({ cwd = vim.fn.expand("%:p:h") })<CR>', { noremap = true, silent = true, desc = "Find Files Current Directory" })
-vim.api.nvim_set_keymap('n', '<leader>vS', ':Telescope lsp_document_symbols<CR>', { noremap = true, silent = true, desc = "List File Symbols" })
-vim.api.nvim_set_keymap('n', '<leader>vm', ':Telescope lsp_document_symbols symbols=method<CR>', { noremap = true, silent = true, desc = "List File Symbols" })
 -- Quit buffer
 vim.api.nvim_set_keymap('n', '<leader>qq', ':q<CR>', { noremap = true, silent = true, desc = "Quit buffer" })
--- Wrtie and quit buffer
-vim.api.nvim_set_keymap('n', '<leader>wq', ':wq<CR>', { noremap = true, silent = true, desc = "Write file" })
 -- Go to normal mode and save
 vim.api.nvim_set_keymap('i', 'jf', '<Esc>:w<CR>', { noremap = false, silent = true })
 -- Go to normal mode 'jj' and 'jk'
@@ -16,7 +10,7 @@ vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
 
 -- Search and replace under word.
-vim.api.nvim_set_keymap('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>//g<Left><Left>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>//g<Left><Left>', { noremap = true, silent = true, desc = "replace all occurrences of current symbol." })
 
 -- Map Ctrl-x Ctrl-s to save the file from insert mode
 vim.api.nvim_set_keymap('i', '<C-x><C-s>', '<Esc>:w<CR>', { noremap = true, silent = true })
@@ -57,10 +51,6 @@ vim.api.nvim_set_keymap('v', 'D', '"+d', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('x', 'd', '"+d', { noremap = true, silent = true })
 ---
 
-vim.keymap.set("n", "<leader>xx", function()
-    vim.cmd('source')
-    vim.notify("Sourced current Lua file", vim.log.levels.INFO)
-end, { desc = "Source current Lua file", noremap = true, silent = true })
 
 -- Buffer navigation
 vim.keymap.set("n", "<leader>bj", vim.cmd.bn, {desc = "Next Buffer"})
@@ -77,28 +67,33 @@ vim.api.nvim_set_keymap('n', '<leader>qf', ':cfirst<CR>', opts)  -- First item
 vim.api.nvim_set_keymap('n', '<leader>ql', ':clast<CR>', opts)   -- Last item
 vim.api.nvim_set_keymap('n', '<leader>qq', ':cwindow<CR>', opts) -- Toggle open if items exist
 
--- Harpoon
-local harpoon = require("harpoon")
 
--- REQUIRED
-harpoon:setup()
--- REQUIRED
-vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, {desc = "Add to harpoon"})
-vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, {desc = "View harpoon list"})
+-- local harpoon = require("harpoon")
+--
+-- -- REQUIRED
+-- harpoon:setup()
+-- -- REQUIRED
+--
+-- vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+-- vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+--
+-- vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+-- vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+-- vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+-- vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+--
+-- -- Toggle previous & next buffers stored within Harpoon list
+-- vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+-- vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 
-vim.keymap.set("n", "<leader>j", function() harpoon:list():select(1) end, {desc = "Harpoon Buffer 1"})
-vim.keymap.set("n", "<leader>k", function() harpoon:list():select(2) end, {desc = "Harpoon Buffer 2"})
-vim.keymap.set("n", "<leader>l", function() harpoon:list():select(3) end, {desc = "Harpoon Buffer 3"})
-vim.keymap.set("n", "<leader>;", function() harpoon:list():select(4) end, {desc = "Harpoon Buffer 4"})
-
-local wk = require("which-key")
-wk.add({
-  { "<leader>p", group = "Project" }, -- group
-  { "<leader>b", group = "Buffers" }, -- group
-  { "<leader>d", group = "Dir" }, -- group
-  { "<leader>h", group = "Hop" }, -- group
-  { "<leader>v", group = "LSP" }, -- group
-})
+-- local wk = require("which-key")
+-- wk.add({
+--   { "<leader>p", group = "Project" }, -- group
+--   { "<leader>b", group = "Buffers" }, -- group
+--   { "<leader>d", group = "Dir" }, -- group
+--   { "<leader>h", group = "Hop" }, -- group
+--   { "<leader>v", group = "LSP" }, -- group
+-- })
 
 
 -- Copilot
@@ -110,7 +105,7 @@ vim.keymap.set('i', '<C-D>', '<Plug>(copilot-accept-word)')
 vim.g.copilot_no_tab_map = true
 
 -- lua snip
-local ls = require("luasnip");
-vim.keymap.set({"i"}, "<Tab>", function() ls.expand() end, {silent = true})
-vim.keymap.set({"i", "s"}, "<S-Tab>", function() ls.jump(1) end, {silent = true})
+-- local ls = require("luasnip");
+-- vim.keymap.set({"i"}, "<Tab>", function() ls.expand() end, {silent = true})
+-- vim.keymap.set({"i", "s"}, "<S-Tab>", function() ls.jump(1) end, {silent = true})
 

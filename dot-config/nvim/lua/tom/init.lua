@@ -1,5 +1,6 @@
+require("tom.pack")
 require("tom.remap")
-require("tom.packer")
+-- require("tom.packer")
 require("tom.theme")
 require("tom.spacing")
 require("tom.telescope")
