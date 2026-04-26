@@ -1,3 +1,6 @@
+require("mason-lspconfig").setup {
+    ensure_installed = { "lua_ls", "phpantom_lsp" }
+}
 vim.lsp.config('*', {
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
@@ -49,9 +52,6 @@ vim.lsp.config('lua_ls', {
     Lua = {},
   },
 })
-
-
-vim.lsp.enable('lua_ls')
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)

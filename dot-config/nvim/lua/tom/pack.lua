@@ -20,6 +20,7 @@ vim.pack.add({
   { src = gh('hrsh7th/nvim-cmp') },
   { src = gh('hrsh7th/cmp-nvim-lsp') },
   { src = gh('mason-org/mason.nvim') },
+  { src = gh('mason-org/mason-lspconfig.nvim') },
 
   --
   -- -- Specify plugin's name (here the plugin will be called "plugin1"
