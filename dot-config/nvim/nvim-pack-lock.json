@@ -13,6 +13,10 @@
       "src": "https://github.com/ThePrimeagen/harpoon",
       "version": "'87b1a3506211538f460786c23f98ec63ad9af4e5'"
     },
+    "hop.nvim": {
+      "rev": "1a1eceafe54b5081eae4cb91c723abd1d450f34b",
+      "src": "https://github.com/hadronized/hop.nvim"
+    },
     "mason-lspconfig.nvim": {
       "rev": "0c2823e0418f3d9230ff8b201c976e84de1cb401",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
