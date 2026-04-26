@@ -1,1 +1,1 @@
-vim.cmd.colorscheme "rainbow12"
+vim.opt.termguicolors = false
