@@ -1,7 +1,16 @@
 local gh = function(x) return 'https://github.com/' .. x end
 
-
-
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+    if name == 'nvim-treesitter' and (kind == 'install' or kind == 'update') then
+      if not ev.data.active then
+        vim.cmd.packadd('nvim-treesitter')
+      end
+      vim.cmd('TSUpdate')
+    end
+  end,
+})
 
 vim.pack.add({
   --Dependancies
@@ -21,21 +30,5 @@ vim.pack.add({
   { src = gh('hrsh7th/cmp-nvim-lsp') },
   { src = gh('mason-org/mason.nvim') },
   { src = gh('mason-org/mason-lspconfig.nvim') },
-
-  --
-  -- -- Specify plugin's name (here the plugin will be called "plugin1"
-  -- -- instead of "generic-name")
-  -- { src = 'https://github.com/user/generic-name', name = 'plugin2' },
-  --
-  -- -- Specify version to follow during install and update
-  -- {
-  --   src = 'https://github.com/user/plugin3',
-  --   -- Version constraint, see |vim.version.range()|
-  --   version = vim.version.range('1.0'),
-  -- }
-  -- {
-  --   src = 'https://github.com/user/plugin4',
-  --   -- Git branch, tag, or commit hash
-  --   version = 'main',
-  -- },
+  { src = gh('nvim-treesitter/nvim-treesitter') },
 })
