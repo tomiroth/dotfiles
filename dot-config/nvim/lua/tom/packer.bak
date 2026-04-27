@@ -7,9 +7,8 @@ require('packer').startup(function(use)
 
   use('nvim-treesitter/playground')
 
-	    {'L3MON4D3/LuaSnip'},
+    {'L3MON4D3/LuaSnip'},
 
-	use { "catppuccin/nvim", as = "catppuccin" }
 
     use {
       'prettier/vim-prettier',
@@ -19,8 +18,6 @@ require('packer').startup(function(use)
       'mrcjkb/rustaceanvim',
       requires = {{"mfussenegger/nvim-dap"}}
     }
-
-    use { "github/copilot.vim" }
 
     use { "mfussenegger/nvim-dap" }
 

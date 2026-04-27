@@ -32,4 +32,5 @@ vim.pack.add({
   { src = gh('mason-org/mason-lspconfig.nvim') },
   { src = gh('nvim-treesitter/nvim-treesitter') },
   { src = gh('hadronized/hop.nvim') },
+  { src = gh('github/copilot.vim') },
 })
