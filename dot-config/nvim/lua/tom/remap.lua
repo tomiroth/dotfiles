@@ -77,6 +77,10 @@ vim.api.nvim_set_keymap('n', '<leader>qf', ':cfirst<CR>', opts)  -- First item
 vim.api.nvim_set_keymap('n', '<leader>ql', ':clast<CR>', opts)   -- Last item
 vim.api.nvim_set_keymap('n', '<leader>qq', ':cwindow<CR>', opts) -- Toggle open if items exist
 
+
+-- Open file in git hub
+vim.api.nvim_set_keymap('n', '<leader>pG', '! gh browse %<CR>', opts) 
+
 -- Harpoon
 local harpoon = require("harpoon")
 
