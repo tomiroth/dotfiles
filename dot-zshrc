@@ -123,7 +123,7 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug load
 
 # Go to normal mode when pressing jk.
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
