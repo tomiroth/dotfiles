@@ -1,6 +1,9 @@
+require("mason").setup()
 require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "phpantom_lsp" }
+    ensure_installed = { "lua_ls", "phpactor", "ts_ls", "pyright", "rust_analyzer", "zls" },
+    automatic_enable = false,
 }
+vim.lsp.enable({ "lua_ls", "phpactor", "ts_ls", "pyright", "rust_analyzer", "zls" })
 vim.lsp.config('*', {
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
@@ -50,6 +53,22 @@ vim.lsp.config('lua_ls', {
   end,
   settings = {
     Lua = {},
+  },
+})
+
+require("conform").setup({
+  formatters_by_ft = {
+    javascript = { "prettier" },
+    javascriptreact = { "prettier" },
+    typescript = { "prettier" },
+    typescriptreact = { "prettier" },
+    json = { "prettier" },
+    css = { "prettier" },
+    scss = { "prettier" },
+  },
+  format_on_save = {
+    timeout_ms = 2000,
+    lsp_format = "fallback",
   },
 })
 

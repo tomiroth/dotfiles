@@ -69,7 +69,41 @@ vim.api.nvim_set_keymap('n', '<leader>qq', ':cwindow<CR>', opts) -- Toggle open 
 
 
 -- Open file in git hub
-vim.api.nvim_set_keymap('n', '<leader>pG', '! gh browse %<CR>', opts) 
+vim.api.nvim_set_keymap('n', '<leader>pG', '! gh browse %<CR>', opts)
+
+-- Git log with full patch for current file
+vim.keymap.set("n", "<leader>gl", ":term git log -p %<CR>", { noremap = true, silent = true, desc = "Git log patch history for file" })
+
+-- Open current file as it was at a given commit, in a scratch (non-savable) buffer
+local function git_show_at_commit()
+  local commit = vim.fn.input("Commit hash: ")
+  if commit == "" then
+    return
+  end
+
+  local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+  if vim.v.shell_error ~= 0 then
+    vim.notify("Not a git repository", vim.log.levels.ERROR)
+    return
+  end
+
+  local rel_path = vim.fn.expand("%:p"):sub(#git_root + 2)
+  local content = vim.fn.systemlist({ "git", "-C", git_root, "show", commit .. ":" .. rel_path })
+  if vim.v.shell_error ~= 0 then
+    vim.notify(table.concat(content, "\n"), vim.log.levels.ERROR)
+    return
+  end
+
+  vim.cmd("enew")
+  vim.bo.buftype = "nofile"
+  vim.bo.bufhidden = "wipe"
+  vim.bo.swapfile = false
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, content)
+  pcall(vim.api.nvim_buf_set_name, 0, commit .. ":" .. rel_path)
+  vim.cmd("filetype detect")
+end
+
+vim.keymap.set("n", "<leader>gs", git_show_at_commit, { desc = "Open current file at a given commit hash (scratch buffer)" })
 
 -- Copilot
 vim.keymap.set('i', '<C-F>', 'copilot#Accept("\\<CR>")', {

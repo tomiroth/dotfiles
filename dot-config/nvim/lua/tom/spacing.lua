@@ -20,6 +20,13 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.g['prettier#autoformat'] = 1
 vim.g['prettier#autoformat_config_present'] = 1
 
+local function find_local_prettier()
+  local node_modules = vim.fn.finddir('node_modules', vim.fn.expand('%:p:h') .. ';')
+  if node_modules ~= '' then
+    return node_modules .. '/.bin/prettier'
+  end
+  return 'prettier'
+end
 
 -- state variable
 local prettier_enabled = true
@@ -33,6 +40,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.json", "*.css", "*.scss", "*.html", "*.yaml", "*.yml" },
   callback = function()
     if prettier_enabled then
+      vim.g['prettier#exec_cmd_path'] = find_local_prettier()
       vim.cmd("silent! Prettier")
     end
   end,

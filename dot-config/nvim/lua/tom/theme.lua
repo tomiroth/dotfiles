@@ -1,1 +1,3 @@
-vim.opt.termguicolors = false
+vim.opt.termguicolors = true
+require("catppuccin").setup({ transparent_background = true })
+vim.cmd.colorscheme "catppuccin-mocha"

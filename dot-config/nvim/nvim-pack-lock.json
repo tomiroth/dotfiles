@@ -4,6 +4,10 @@
       "rev": "cbc7b02bb99fae35cb42f514762b89b5126651ef",
       "src": "https://github.com/hrsh7th/cmp-nvim-lsp"
     },
+    "conform.nvim": {
+      "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
     "copilot.vim": {
       "rev": "a12fd5672110c8aa7e3c8419e28c96943ca179be",
       "src": "https://github.com/github/copilot.vim"
@@ -18,8 +22,8 @@
       "version": "'87b1a3506211538f460786c23f98ec63ad9af4e5'"
     },
     "hop.nvim": {
-      "rev": "1a1eceafe54b5081eae4cb91c723abd1d450f34b",
-      "src": "https://github.com/hadronized/hop.nvim"
+      "rev": "707049feaca9ae65abb3696eff9aefc7879e66aa",
+      "src": "https://github.com/smoka7/hop.nvim"
     },
     "mason-lspconfig.nvim": {
       "rev": "0c2823e0418f3d9230ff8b201c976e84de1cb401",
@@ -41,6 +45,10 @@
       "rev": "de740991c12411b663994b2860f1a4fd0937c130",
       "src": "https://github.com/MunifTanjim/nui.nvim"
     },
+    "nvim": {
+      "rev": "426dbebe06b5c69fd846ceb17b42e12f890aedf1",
+      "src": "https://github.com/catppuccin/nvim"
+    },
     "nvim-cmp": {
       "rev": "a1d504892f2bc56c2e79b65c6faded2fd21f3eca",
       "src": "https://github.com/hrsh7th/nvim-cmp"
@@ -57,9 +65,17 @@
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
+    "rainbow12": {
+      "rev": "51ad878f8da7cc7ba795bd73fe28dcbfbe55dddd",
+      "src": "https://github.com/0Risotto/rainbow12"
+    },
     "telescope.nvim": {
       "rev": "506338434fec5ad19cb1f8d45bf92d66c4917393",
       "src": "https://github.com/nvim-telescope/telescope.nvim"
+    },
+    "vim-dirdiff": {
+      "rev": "84bc8999fde4b3c2d8b228b560278ab30c7ea4c9",
+      "src": "https://github.com/will133/vim-dirdiff"
     },
     "vim-tmux-navigator": {
       "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
