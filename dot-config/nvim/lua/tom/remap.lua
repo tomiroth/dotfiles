@@ -105,6 +105,24 @@ end
 
 vim.keymap.set("n", "<leader>gs", git_show_at_commit, { desc = "Open current file at a given commit hash (scratch buffer)" })
 
+-- Open the most recently edited Claude plan file
+local function open_last_claude_plan()
+  local plans_dir = vim.fn.expand("~/.claude/plans")
+  local files = vim.fn.globpath(plans_dir, "*.md", false, true)
+  if #files == 0 then
+    vim.notify("No plan files found in " .. plans_dir, vim.log.levels.WARN)
+    return
+  end
+
+  table.sort(files, function(a, b)
+    return vim.fn.getftime(a) > vim.fn.getftime(b)
+  end)
+
+  vim.cmd("edit " .. vim.fn.fnameescape(files[1]))
+end
+
+vim.keymap.set("n", "<leader>cp", open_last_claude_plan, { desc = "Open last edited Claude plan file" })
+
 -- Copilot
 vim.keymap.set('i', '<C-F>', 'copilot#Accept("\\<CR>")', {
   expr = true,
