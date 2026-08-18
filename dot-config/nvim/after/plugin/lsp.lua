@@ -78,6 +78,7 @@ require("conform").setup({
     json = { "prettier" },
     css = { "prettier" },
     scss = { "prettier" },
+    templ = { "templ" },
   },
   -- Applies to Lua too: with no Lua formatter configured, conform falls back
   -- to lua_ls (set up above with 2-space indent) on every BufWritePre.
