@@ -1,5 +1,5 @@
 require("noice").setup({
- messages = {
+  messages = {
     view = "mini",
   },
   views = {
@@ -23,7 +23,7 @@ require("noice").setup({
       },
     },
   },
- routes = {
+  routes = {
     {
       filter = {
         event = "msg_showmode",

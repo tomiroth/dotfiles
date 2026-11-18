@@ -5,16 +5,16 @@ vim.opt.expandtab = true
 
 -- Function to set 2-space indent for Lua and JS/TS files
 local function set_two_space_indent()
-    vim.bo.shiftwidth = 2
-    vim.bo.tabstop = 2
-    vim.bo.softtabstop = 2
-    vim.bo.expandtab = true
+  vim.bo.shiftwidth = 2
+  vim.bo.tabstop = 2
+  vim.bo.softtabstop = 2
+  vim.bo.expandtab = true
 end
 
 -- Autocommand to trigger the function for Lua and JS/TS files
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = {"lua", "typescript", "typescriptreact", "javascript", "javascriptreact"},
-    callback = set_two_space_indent
+  pattern = {"lua", "typescript", "typescriptreact", "javascript", "javascriptreact"},
+  callback = set_two_space_indent
 })
 
 -- Prettier configuration
@@ -61,9 +61,9 @@ end
 vim.api.nvim_create_user_command("TogglePrettier", TogglePrettier, {})
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.rs",
-    callback = function()
-        vim.lsp.buf.format({ async = true })
-    end,
+  pattern = "*.rs",
+  callback = function()
+    vim.lsp.buf.format({ async = true })
+  end,
 })
 
