@@ -1,8 +1,16 @@
 {
   "plugins": {
+    "catppuccin": {
+      "rev": "426dbebe06b5c69fd846ceb17b42e12f890aedf1",
+      "src": "https://github.com/catppuccin/nvim"
+    },
     "cmp-nvim-lsp": {
       "rev": "cbc7b02bb99fae35cb42f514762b89b5126651ef",
       "src": "https://github.com/hrsh7th/cmp-nvim-lsp"
+    },
+    "conform.nvim": {
+      "rev": "18aeab3d63d350dcf44d64c462cc489a3412af40",
+      "src": "https://github.com/stevearc/conform.nvim"
     },
     "copilot.vim": {
       "rev": "a12fd5672110c8aa7e3c8419e28c96943ca179be",
@@ -12,14 +20,14 @@
       "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
       "src": "https://github.com/sindrets/diffview.nvim"
     },
+    "flash.nvim": {
+      "rev": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a",
+      "src": "https://github.com/folke/flash.nvim"
+    },
     "harpoon": {
       "rev": "87b1a3506211538f460786c23f98ec63ad9af4e5",
       "src": "https://github.com/ThePrimeagen/harpoon",
       "version": "'87b1a3506211538f460786c23f98ec63ad9af4e5'"
-    },
-    "hop.nvim": {
-      "rev": "1a1eceafe54b5081eae4cb91c723abd1d450f34b",
-      "src": "https://github.com/hadronized/hop.nvim"
     },
     "mason-lspconfig.nvim": {
       "rev": "0c2823e0418f3d9230ff8b201c976e84de1cb401",
@@ -56,6 +64,10 @@
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "telescope-luasnip.nvim": {
+      "rev": "07a2a2936a7557404c782dba021ac0a03165b343",
+      "src": "https://github.com/benfowler/telescope-luasnip.nvim"
     },
     "telescope.nvim": {
       "rev": "506338434fec5ad19cb1f8d45bf92d66c4917393",

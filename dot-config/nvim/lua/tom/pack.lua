@@ -20,6 +20,7 @@ vim.pack.add({
 
   --Packages
   { src = gh('nvim-telescope/telescope.nvim') }, -- plenary
+  { src = gh('benfowler/telescope-luasnip.nvim') },
   { src = gh('christoomey/vim-tmux-navigator') }, -- plenary
   { src = gh('ThePrimeagen/harpoon'), version = '87b1a3506211538f460786c23f98ec63ad9af4e5' }, -- plenary
   { src = gh('folke/which-key.nvim') },
@@ -31,6 +32,9 @@ vim.pack.add({
   { src = gh('mason-org/mason.nvim') },
   { src = gh('mason-org/mason-lspconfig.nvim') },
   { src = gh('nvim-treesitter/nvim-treesitter') },
-  { src = gh('hadronized/hop.nvim') },
+  { src = gh('folke/flash.nvim') },
   { src = gh('github/copilot.vim') },
+  { src = gh('stevearc/conform.nvim') },
+  { src = gh('catppuccin/nvim'), name = 'catppuccin' },
+
 })

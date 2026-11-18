@@ -1,6 +1,16 @@
 require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "phpantom_lsp" }
+    ensure_installed = { "lua_ls", "phpantom_lsp", "gopls" }
 }
+
+-- templ filetype and LSP support
+vim.filetype.add({ extension = { templ = "templ" } })
+vim.lsp.config('templ', {
+  cmd = { 'templ', 'lsp' },
+  filetypes = { 'templ' },
+  root_markers = { 'go.mod', '.git' },
+})
+vim.lsp.enable('templ')
+
 vim.lsp.config('*', {
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })

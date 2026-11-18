@@ -9,5 +9,7 @@ M.find_directories = function(opts)
   }))
 end
 
+require('telescope').load_extension('luasnip')
+
 return M
 
