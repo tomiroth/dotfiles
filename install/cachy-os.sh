@@ -18,6 +18,11 @@ sudo pacman -S --needed ghostty
 kwriteconfig6 --file kdeglobals --group General \
   --key TerminalApplication com.mitchellh.ghostty.desktop
 
+# Enable Linux-only Ghostty settings via the optional include in config.ghostty.
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+mkdir -p "$HOME/.config/ghostty-os"
+ln -sfn "$repo_root/install/ghostty/linux.ghostty" "$HOME/.config/ghostty-os/config"
+
 # Install terminal and dev packages from the official repos.
 sudo pacman -S --needed neovim tmux stow zoxide go npm glow valgrind \
   tree-sitter-cli openbsd-netcat composer packer keyd flatpak docker \

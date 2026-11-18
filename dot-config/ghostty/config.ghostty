@@ -6,3 +6,7 @@ font-size = 10
 keybind = global:ctrl+backquote=toggle_quick_terminal
 keybind = ctrl+shift+super+j=increase_font_size:1
 keybind = ctrl+shift+super+k=decrease_font_size:1
+
+# Optional OS-specific overrides, linked by install/*.sh.
+# Linux links install/ghostty/linux.ghostty here for the wallpaper settings.
+config-file = ?../ghostty-os/config

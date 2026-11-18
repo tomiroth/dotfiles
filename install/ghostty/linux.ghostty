@@ -1,0 +1,5 @@
+# Linux-only Ghostty overrides.
+# Linked to ~/.config/ghostty-os/config by install/cachy-os.sh.
+background-image = ~/Downloads/tifa.png
+background-image-fit = cover
+background-image-opacity = 0.011
