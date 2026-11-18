@@ -1,3 +1,6 @@
+# Make sure Linux-only Ghostty settings from another machine aren't inherited.
+rm -f "$HOME/.config/ghostty-os/config"
+
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 

@@ -11,7 +11,11 @@ source ~/.zplug/init.zsh
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+if [ "$(uname -s)" = "Linux" ]; then
+  export ZSH="/usr/share/oh-my-zsh"
+elif [ "$(uname -s)" = "Darwin" ]; then
+  export ZSH="$HOME/.oh-my-zsh"
+fi
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -108,7 +112,10 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export PATH="$PATH:/opt/nvim-linux64/bin"
+if [ "$(uname -s)" = "Linux" ]; then
+  export PATH="$PATH:/opt/nvim-linux64/bin"
+fi
+export PATH="$PATH:$HOME/go/bin"
 
 # Plug-ins
 zplug "jeffreytse/zsh-vi-mode"
@@ -123,7 +130,7 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug load
 
 # Go to normal mode when pressing jk.
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
@@ -159,7 +166,9 @@ z() {
 bindkey '^T' z
 
 # Created by `pipx` on 2025-07-10 11:20:07
-export PATH="$PATH:/Users/tomelliott/.local/bin"
+if [ "$(uname -s)" = "Darwin" ]; then
+  export PATH="$PATH:/Users/tomelliott/.local/bin"
+fi
 
 ss() {
     if [ "$(uname -s)" = "Linux" ]; then
@@ -167,8 +176,6 @@ ss() {
         pacman -Ss "$@"
         echo -e "\n--- Arch User Repository ---"
         yay -Ssa "$@"
-        echo -e "\n--- Paru ---"
-        paru -Ss "$@"
         echo -e "\n--- Flatpak ---"
         flatpak search "$@" 
     elif [ "$(uname -s)" = "Darwin" ]; then

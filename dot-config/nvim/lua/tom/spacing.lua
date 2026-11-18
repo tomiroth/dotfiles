@@ -3,17 +3,18 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.expandtab = true
 
--- Function to set 2-space tab for TypeScript files
-local function set_ts_indent()
+-- Function to set 2-space indent for Lua and JS/TS files
+local function set_two_space_indent()
     vim.bo.shiftwidth = 2
     vim.bo.tabstop = 2
+    vim.bo.softtabstop = 2
     vim.bo.expandtab = true
 end
 
--- Autocommand to trigger the function for TypeScript files
+-- Autocommand to trigger the function for Lua and JS/TS files
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = {"typescript", "typescriptreact", "javascript", "javascriptreact"},
-    callback = set_ts_indent
+    pattern = {"lua", "typescript", "typescriptreact", "javascript", "javascriptreact"},
+    callback = set_two_space_indent
 })
 
 -- Prettier configuration

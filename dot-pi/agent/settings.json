@@ -1,0 +1,9 @@
+{
+  "lastChangelogVersion": "1.5.2",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "hy4-flash-free",
+  "packages": [
+    "npm:pi-vim"
+  ],
+  "hideThinkingBlock": false
+}

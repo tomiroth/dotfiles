@@ -1,0 +1,51 @@
+HYPRLAND KEYBINDINGS
+====================
+
+The modifier called SUPER is the Meta/Windows key.
+Press SUPER + CTRL + H for this keybinding guide.
+Press q in this window to close it (or Ctrl+C).
+
+APPLICATIONS AND WINDOWS
+  SUPER + Q            Open Ghostty terminal
+  SUPER + C            Close the focused window
+  SUPER + M            Shut down Hyprland (hyprshutdown, if installed)
+  SUPER + E            Open Dolphin file manager
+  SUPER + R            Open Hyprlauncher
+  SUPER + V            Toggle floating mode
+  SUPER + P            Toggle pseudotiling
+  SUPER + J            Toggle split direction
+  SUPER + CTRL + H    Open this keybinding guide
+
+FOCUS WINDOWS
+  SUPER + Left         Focus the window to the left
+  SUPER + Right        Focus the window to the right
+  SUPER + Up           Focus the window above
+  SUPER + Down         Focus the window below
+
+WORKSPACES
+  SUPER + 1..9         Switch to workspace 1 through 9
+  SUPER + 0            Switch to workspace 10
+  SUPER + Shift + 1..9 Move the focused window to workspace 1 through 9
+  SUPER + Shift + 0    Move the focused window to workspace 10
+
+SPECIAL WORKSPACE
+  SUPER + S            Toggle the special workspace "magic"
+  SUPER + Shift + S    Move the focused window to the special workspace
+
+MOUSE AND WORKSPACES
+  SUPER + mouse left   Drag a window
+  SUPER + mouse right  Resize a window
+  SUPER + mouse wheel  Change workspace
+
+MEDIA AND DISPLAY
+  Audio volume keys    Change/mute the default audio output
+  Microphone mute      Mute/unmute the default microphone
+  Brightness keys      Increase/decrease screen brightness
+  Audio next           Next track
+  Audio pause/play     Play/pause media
+  Audio previous       Previous track
+
+DEPENDENCIES
+  The optional bindings use: hyprshutdown, hyprlauncher, wpctl,
+  brightnessctl, and playerctl. Install whichever of these you want
+  to use; the terminal and file-manager bindings use Ghostty and Dolphin.

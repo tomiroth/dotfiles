@@ -21,4 +21,4 @@ _darcs
 ^/README.*
 ^/LICENS
 
-\install
+^/install$

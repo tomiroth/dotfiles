@@ -1,9 +1,17 @@
 require("mason").setup()
 require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "phpactor", "ts_ls", "pyright", "rust_analyzer", "zls" },
-    automatic_enable = false,
+  ensure_installed = { "lua_ls", "phpantom_lsp", "gopls", "ts_ls", "pyright", "rust_analyzer", "zls" }
 }
-vim.lsp.enable({ "lua_ls", "phpactor", "ts_ls", "pyright", "rust_analyzer", "zls" })
+
+-- templ filetype and LSP support
+vim.filetype.add({ extension = { templ = "templ" } })
+vim.lsp.config('templ', {
+  cmd = { 'templ', 'lsp' },
+  filetypes = { 'templ' },
+  root_markers = { 'go.mod', '.git' },
+})
+vim.lsp.enable('templ')
+
 vim.lsp.config('*', {
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
@@ -12,8 +20,8 @@ vim.lsp.config('lua_ls', {
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
       if
-        path ~= vim.fn.stdpath('config')
-        and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+          path ~= vim.fn.stdpath('config')
+          and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
       then
         return
       end
@@ -52,7 +60,12 @@ vim.lsp.config('lua_ls', {
     })
   end,
   settings = {
-    Lua = {},
+    Lua = {
+      format = {
+        tab_width = 2,
+        indent_width = 2,
+      },
+    },
   },
 })
 
@@ -66,6 +79,8 @@ require("conform").setup({
     css = { "prettier" },
     scss = { "prettier" },
   },
+  -- Applies to Lua too: with no Lua formatter configured, conform falls back
+  -- to lua_ls (set up above with 2-space indent) on every BufWritePre.
   format_on_save = {
     timeout_ms = 2000,
     lsp_format = "fallback",
