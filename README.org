@@ -1,4 +1,8 @@
-Set up home config using stow.
+Set up home config using stow. Pi config (settings, keybindings, extensions, and
+the npm package manifest) lives in =dot-pi/agent/=. Create the Pi agent directory
+first so stow links individual files instead of folding =~/.pi= into the repo;
+Pi's generated state (auth, sessions, model cache) stays outside dotfiles.
 #+begin_src bash
-cd ~/dotfiles;stow --dotfiles .;
+mkdir -p ~/.pi/agent
+cd ~/dotfiles && stow --dotfiles .
 #+end_src
