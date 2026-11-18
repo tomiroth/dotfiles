@@ -1,2 +1,4 @@
 .emacs.d/*
 !.emacs.d/init.el
+dot-zshrc-local
+
