@@ -21,11 +21,7 @@ Delete =~/.quick_claude_session= to force a fresh session.
 
 Binding (in =dot-tmux.conf=): =M-c= opens a popup running ~quick-claude~.
 
-Note: Stow can't manage =dot-local= because =~/.local= is a real directory with
-manually-managed symlinks, so the file is linked by hand:
-#+begin_src bash
-ln -sfn ~/dotfiles/dot-local/bin/quick-claude ~/.local/bin/quick-claude
-#+end_src
+The symlink into =~/.local/bin= is managed by Stow; no manual linking is needed.
 
 * update-zsh-plugins
 Pulls the two zsh plugins that are sourced directly from =~/.zplug/repos= by
@@ -36,23 +32,16 @@ manually to update them:
 update-zsh-plugins
 #+end_src
 
-Like =quick-claude=, the source of truth is in =dot-local/bin= and it is linked
-by hand:
-#+begin_src bash
-ln -sfn ~/dotfiles/dot-local/bin/update-zsh-plugins ~/.local/bin/update-zsh-plugins
-#+end_src
+Like =quick-claude=, the source of truth is in =dot-local/bin= and Stow links it
+into =~/.local/bin=.
 
 * pi: opencode-go usage extension
 Shows OpenCode Go rolling (5h), weekly and monthly usage from
 =https://opencode.ai/inference/go/v1/usage=. The key is read from
 =OPENCODE_API_KEY= or =~pi/agent/auth.json=.
 
-Source of truth is =dot-pi/agent/extensions/opencode-go-usage.ts=, linked into
-Pi's auto-discovered extension directory:
-#+begin_src bash
-ln -sfn ../../../dotfiles/dot-pi/agent/extensions/opencode-go-usage.ts \
-  ~/.pi/agent/extensions/opencode-go-usage.ts
-#+end_src
+Extensions under =dot-pi/agent/extensions= are linked into Pi's auto-discovered
+extension directory by Stow; no manual linking is needed.
 
 Commands:
 - =/go-usage= shows the usage panel (=R= refreshes, =Esc= closes).
