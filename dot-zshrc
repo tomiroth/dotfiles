@@ -116,6 +116,7 @@ if [ "$(uname -s)" = "Linux" ]; then
   export PATH="$PATH:/opt/nvim-linux64/bin"
 fi
 export PATH="$PATH:$HOME/go/bin"
+export PATH="$HOME/.pi/agent/bin:$PATH"
 
 # Plug-ins
 zplug "jeffreytse/zsh-vi-mode"
@@ -145,7 +146,7 @@ alias tpurge="clear && printf '\e[3J'"
 # Load new tmux session on current directory
 alias tn='tmux new -s $(basename "$PWD")'
 
-source ~/.zshrc-local
+[[ -r ~/.zshrc-local ]] && source ~/.zshrc-local
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
