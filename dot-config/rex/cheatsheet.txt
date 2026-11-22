@@ -1,0 +1,77 @@
+  REX KEYBINDS                                    q close   / search   j/k scroll
+  ═══════════════════════════════════════════════════════════════════════════
+  Your bindings live in ~/.config/rex/init.lua. Update this file when they change.
+  "C-b x" means press ctrl+b, release, then press x.
+
+  PANES
+  ───────────────────────────────────────────────────────────────────────────
+  ctrl+h / j / k / l     Move to pane left / down / up / right
+                         (in nvim: moves between splits first, then panes)
+  C-b h / j / k / l      Move to pane left / down / up / right
+  alt+h / j / k / l      Split pane left / down / up / right
+  alt+shift+g            Split pane right
+  alt+shift+h/j/k/l      Resize pane by 5 left / down / up / right
+  C-b z                  Zoom pane (toggle)
+  C-b x                  Close pane (closes the tab if it's the last pane)
+  alt+x                  Close pane
+
+  TABS  (tmux windows)
+  ───────────────────────────────────────────────────────────────────────────
+  C-b c                  New tab
+  C-b n                  Next tab
+  C-b 1 … 9              Go to tab 1 … 9
+  C-b ,                  Rename tab
+
+  SESSIONS
+  ───────────────────────────────────────────────────────────────────────────
+  C-b s   (or cmd+k)     Session picker
+  C-b p                  Last session (toggle between the two most recent)
+  C-b (  /  C-b )        Previous / next session
+  C-b $                  Rename session
+  cmd+p                  Go to Anything (sessions, tabs, panes)
+  shift+cmd+n            New session
+
+  POPUPS
+  ───────────────────────────────────────────────────────────────────────────
+  C-b [                  Copy mode: h/j/k/l move, / ? search, n/N repeat,
+                         v/V/C-v select, y yank, Esc/q exit
+  C-b u                  Claude Code usage
+  C-b S                  Claude: commit staged files
+  C-b ?                  This cheat sheet
+  Esc                    Close usage / commit / cheat-sheet popup
+
+  VIEW & MISC
+  ───────────────────────────────────────────────────────────────────────────
+  C-b b                  Hide / show the tab bar
+  C-b r                  Reload config (clears "last session" memory)
+  C-b C-b                Send a literal ctrl+b to the terminal
+  alt+0 / alt+9 / alt+8  Font bigger / smaller / reset
+  ctrl+shift+cmd+j / k   Font bigger / smaller
+  alt+3                  Type #
+
+  USEFUL REX DEFAULTS  (built into the app, from the Rex docs)
+  ───────────────────────────────────────────────────────────────────────────
+  shift+cmd+p            Command palette (shows every action + its shortcut)
+  cmd+,                  Settings
+  cmd+t / cmd+n          New tab / new window
+  cmd+w                  Close pane
+  alt+cmd+w              Close tab
+  cmd+1 … 9              Go to tab
+  ctrl+tab               Next tab (ctrl+shift+tab previous)
+  cmd+d / shift+cmd+d    Split right / down
+  cmd+enter              Split pane, best fit
+  alt+cmd+arrows         Move to pane
+  cmd+] / cmd+[          Next / previous pane
+  alt+shift+cmd+arrows   Move pane
+  shift+cmd+enter        Zoom pane
+  alt+cmd+enter          Float pane
+  cmd+f / cmd+g          Find / find next
+  cmd+up / cmd+down      Jump to previous / next prompt
+  shift+cmd+g            Go to directory
+  ctrl+cmd+i             Insert path
+  cmd+y                  Quick Look
+  cmd+/                  Toggle sidebar
+  alt+cmd+t              Reveal toolbar (when hidden)
+  cmd+= / cmd+- / cmd+0  Font bigger / smaller / reset
+
+  Full default list: https://www.superlogical.com/rex/docs/reference/mac-actions

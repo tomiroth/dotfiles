@@ -35,6 +35,12 @@ update-zsh-plugins
 Like =quick-claude=, the source of truth is in =dot-local/bin= and Stow links it
 into =~/.local/bin=.
 
+* rex config
+Rex's config lives in =dot-config/rex/= (=init.lua=, =scrollback.lua= and
+=cheatsheet.txt=). Stow links those files into =~/.config/rex/=; the directory
+itself stays real so generated state (e.g. =last_session.debug.log= and
+scrollback captures) remains outside the dotfiles repo.
+
 * pi: opencode-go usage extension
 Shows OpenCode Go rolling (5h), weekly and monthly usage from
 =https://opencode.ai/inference/go/v1/usage=. The key is read from
