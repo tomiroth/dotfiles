@@ -1,4 +1,5 @@
 .emacs.d/*
 !.emacs.d/init.el
 dot-zshrc-local
+.DS_Store
 

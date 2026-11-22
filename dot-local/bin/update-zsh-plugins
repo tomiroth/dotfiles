@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Update the zsh plugins that are sourced directly from ~/.zplug/repos.
+# Previously `zplug update` did this; zplug is no longer loaded at startup.
+set -euo pipefail
+
+PLUGINS=(
+  jeffreytse/zsh-vi-mode
+  romkatv/powerlevel10k
+)
+
+for plugin in "${PLUGINS[@]}"; do
+  repo="$HOME/.zplug/repos/$plugin"
+  if [[ ! -d "$repo/.git" ]]; then
+    printf 'Skipping %s: no git repository at %s\n' "$plugin" "$repo" >&2
+    continue
+  fi
+
+  printf '==> Updating %s\n' "$plugin"
+  if ! git -C "$repo" pull --ff-only; then
+    printf 'Warning: %s could not be fast-forwarded (local changes or divergent history); left untouched.\n' "$plugin" >&2
+  fi
+done
+
+# Powerlevel10k caches compiled themes; refresh them after an update.
+p10k_repo="$HOME/.zplug/repos/romkatv/powerlevel10k"
+if [[ -f "$p10k_repo/Makefile" ]]; then
+  printf '==> Recompiling powerlevel10k byte-code cache\n'
+  make -C "$p10k_repo" zwc || printf 'Warning: could not recompile powerlevel10k cache.\n' >&2
+fi
+
+printf 'Done. Restart zsh (or run `exec zsh`) to pick up any changes.\n'

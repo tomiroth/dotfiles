@@ -6,3 +6,55 @@ Pi's generated state (auth, sessions, model cache) stays outside dotfiles.
 mkdir -p ~/.pi/agent
 cd ~/dotfiles && stow --dotfiles .
 #+end_src
+
+* quick-claude
+A wrapper to launch ~claude~ in a popup that always resumes the same "quick"
+session. Source of truth lives in =dot-local/bin/quick-claude= and is symlinked
+into =~/.local/bin= (matching how =claude= and =poetry= are managed there).
+
+Behavior: =~claude --permission-mode manual --model haiku=, then:
+- If =~/.quick_claude_session= holds a session id, resume it with =--resume=.
+- Otherwise start a fresh session under a generated =--session-id= and remember it
+  in =~/.quick_claude_session=.
+
+Delete =~/.quick_claude_session= to force a fresh session.
+
+Binding (in =dot-tmux.conf=): =M-c= opens a popup running ~quick-claude~.
+
+Note: Stow can't manage =dot-local= because =~/.local= is a real directory with
+manually-managed symlinks, so the file is linked by hand:
+#+begin_src bash
+ln -sfn ~/dotfiles/dot-local/bin/quick-claude ~/.local/bin/quick-claude
+#+end_src
+
+* update-zsh-plugins
+Pulls the two zsh plugins that are sourced directly from =~/.zplug/repos= by
+=dot-zshrc= (zsh-vi-mode and powerlevel10k), and recompiles the powerlevel10k
+byte-code cache. zplug itself is no longer loaded at shell startup, so run this
+manually to update them:
+#+begin_src bash
+update-zsh-plugins
+#+end_src
+
+Like =quick-claude=, the source of truth is in =dot-local/bin= and it is linked
+by hand:
+#+begin_src bash
+ln -sfn ~/dotfiles/dot-local/bin/update-zsh-plugins ~/.local/bin/update-zsh-plugins
+#+end_src
+
+* pi: opencode-go usage extension
+Shows OpenCode Go rolling (5h), weekly and monthly usage from
+=https://opencode.ai/inference/go/v1/usage=. The key is read from
+=OPENCODE_API_KEY= or =~pi/agent/auth.json=.
+
+Source of truth is =dot-pi/agent/extensions/opencode-go-usage.ts=, linked into
+Pi's auto-discovered extension directory:
+#+begin_src bash
+ln -sfn ../../../dotfiles/dot-pi/agent/extensions/opencode-go-usage.ts \
+  ~/.pi/agent/extensions/opencode-go-usage.ts
+#+end_src
+
+Commands:
+- =/go-usage= shows the usage panel (=R= refreshes, =Esc= closes).
+- =/go-usage refresh= bypasses the one-minute cache.
+- =/go-usage status= toggles the compact footer status.

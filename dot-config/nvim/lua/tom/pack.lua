@@ -12,6 +12,7 @@ vim.api.nvim_create_autocmd('PackChanged', {
   end,
 })
 
+-- Loaded at startup.
 vim.pack.add({
   --Dependancies
   { src = gh('nvim-lua/plenary.nvim') },
@@ -19,15 +20,12 @@ vim.pack.add({
   { src = gh('MunifTanjim/nui.nvim') },
 
   --Packages
-  { src = gh('nvim-telescope/telescope.nvim') }, -- plenary
   { src = gh('benfowler/telescope-luasnip.nvim') },
   { src = gh('christoomey/vim-tmux-navigator') }, -- plenary
-  { src = gh('ThePrimeagen/harpoon'), version = '87b1a3506211538f460786c23f98ec63ad9af4e5' }, -- plenary
   { src = gh('folke/which-key.nvim') },
   { src = gh('neogitorg/neogit') }, --planary, telescope
   { src = gh('folke/noice.nvim') }, --nui
   { src = gh('neovim/nvim-lspconfig') },
-  { src = gh('hrsh7th/nvim-cmp') },
   { src = gh('hrsh7th/cmp-nvim-lsp') },
   { src = gh('mason-org/mason.nvim') },
   { src = gh('mason-org/mason-lspconfig.nvim') },
@@ -38,3 +36,12 @@ vim.pack.add({
   { src = gh('catppuccin/nvim'), name = 'catppuccin' },
   { src = gh('will133/vim-dirdiff') },
 })
+
+-- Registered/installed at startup, but added to 'runtimepath' on first use.
+-- Keymaps/autocmds that use them live in after/plugin/* and call
+-- require('tom.lazy').load_plugin() before requiring the plugin module.
+vim.pack.add({
+  { src = gh('nvim-telescope/telescope.nvim') },                                                        -- plenary
+  { src = gh('ThePrimeagen/harpoon'),           version = '87b1a3506211538f460786c23f98ec63ad9af4e5' }, -- plenary
+  { src = gh('hrsh7th/nvim-cmp') },
+}, { load = function() end })

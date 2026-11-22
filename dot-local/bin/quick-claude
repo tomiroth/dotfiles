@@ -1,0 +1,28 @@
+#!/bin/bash
+# Launch claude (manual mode, haiku) resuming the saved "quick" session.
+# The session id lives in ~/.quick_claude_session.
+#   - If that file has an id AND its transcript still exists, resume it.
+#   - Otherwise (no id, or the session is gone) start a fresh session under a
+#     known id and remember it.
+SESSION_FILE="$HOME/.quick_claude_session"
+args=(--permission-mode manual --model haiku)
+
+saved_id=""
+if [[ -s "$SESSION_FILE" ]]; then
+  saved_id="$(tr -d '\r\n' < "$SESSION_FILE")"
+fi
+
+# Sessions are transcribed per project dir; the id is globally unique so a
+# resume only succeeds if the transcript file is still on disk.
+transcript=""
+if [[ -n "$saved_id" ]]; then
+  transcript="$(find "$HOME/.claude/projects" -name "$saved_id.jsonl" -print -quit 2>/dev/null)"
+fi
+
+if [[ -n "$transcript" ]]; then
+  claude "${args[@]}" --resume "$saved_id"
+else
+  fresh_id="$(uuidgen | tr '[:upper:]' '[:lower:]')"
+  claude "${args[@]}" --session-id "$fresh_id"
+  printf '%s\n' "$fresh_id" > "$SESSION_FILE"
+fi

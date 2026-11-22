@@ -1,9 +1,10 @@
-theme = Catppuccin Mocha 
+theme = Catppuccin Mocha
 background = #151618
 fullscreen = true
-font-size = 10
+font-size = 15
+macos-option-as-alt = true
 
-keybind = global:ctrl+backquote=toggle_quick_terminal
+keybind = global:ctrl+super+p=toggle_quick_terminal
 keybind = ctrl+shift+super+j=increase_font_size:1
 keybind = ctrl+shift+super+k=decrease_font_size:1
 

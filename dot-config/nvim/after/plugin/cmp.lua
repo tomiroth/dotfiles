@@ -1,15 +1,10 @@
-local cmp = require('cmp')
-cmp.setup({
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'buffer' },
-  }),
-  mapping = cmp.mapping.preset.insert({
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  }),
+-- cmp-nvim-lsp registers an InsertEnter autocmd that requires cmp. Suppress
+-- it until cmp is loaded on the first insert.
+vim.api.nvim_create_augroup('cmp_nvim_lsp', { clear = true })
+
+vim.api.nvim_create_autocmd('InsertEnter', {
+  once = true,
+  callback = function()
+    require('tom.cmp').load()
+  end,
 })

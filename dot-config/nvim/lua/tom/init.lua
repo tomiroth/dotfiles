@@ -3,6 +3,7 @@ require("tom.remap")
 -- require("tom.packer")
 require("tom.theme")
 require("tom.spacing")
+require("tom.spell")
 require("tom.telescope")
 
 -- Turn line numbers on and set them to relative

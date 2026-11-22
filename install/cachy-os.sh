@@ -18,7 +18,7 @@ sudo pacman -S --needed ghostty
 kwriteconfig6 --file kdeglobals --group General \
   --key TerminalApplication com.mitchellh.ghostty.desktop
 
-# Enable Linux-only Ghostty settings via the optional include in config.ghostty.
+# Enable Linux-only Ghostty settings via the optional include in Ghostty's config.
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p "$HOME/.config/ghostty-os"
 ln -sfn "$repo_root/install/ghostty/linux.ghostty" "$HOME/.config/ghostty-os/config"

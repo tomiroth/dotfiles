@@ -1,6 +1,11 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>dd", vim.cmd.Ex, {desc = "Explore Directory of current buffer"})
-vim.keymap.set("n", "<leader>pv", vim.cmd.Neogit, {desc = "Neo Git"})
+-- Neogit uses Telescope for its branch/revision picker; Telescope is lazy-loaded,
+-- so make sure it's available before opening Neogit.
+vim.keymap.set("n", "<leader>pv", function()
+  require("tom.telescope").load()
+  vim.cmd.Neogit()
+end, { desc = "Neo Git" })
 -- Quit buffer
 vim.api.nvim_set_keymap('n', '<leader>qq', ':q<CR>', { noremap = true, silent = true, desc = "Quit buffer" })
 -- Go to normal mode and save
@@ -72,7 +77,24 @@ vim.api.nvim_set_keymap('n', '<leader>qq', ':cwindow<CR>', opts) -- Toggle open 
 vim.api.nvim_set_keymap('n', '<leader>pG', '! gh browse %<CR>', opts)
 
 -- Git log with full patch for current file
-vim.keymap.set("n", "<leader>gl", ":term git log -p %<CR>", { noremap = true, silent = true, desc = "Git log patch history for file" })
+vim.keymap.set("n", "<leader>gl", function()
+  local file = vim.fn.expand("%")
+  local lines = vim.fn.systemlist("git log -p -- " .. vim.fn.shellescape(file))
+  if vim.v.shell_error ~= 0 then
+    vim.notify("git log failed: " .. (lines[1] or ""), vim.log.levels.ERROR)
+    return
+  end
+  vim.cmd("enew")
+  vim.cmd("setlocal buftype=nofile bufhidden=wipe")
+  if #lines > 0 then
+    vim.fn.setline(1, lines)
+  else
+    vim.notify("No commits found for " .. file, vim.log.levels.INFO)
+  end
+  vim.cmd("setlocal nomodifiable")
+  vim.cmd("setlocal filetype=git")
+  vim.keymap.set("n", "q", ":bdelete<CR>", { buffer = true })
+end, { desc = "Git log patch history for file" })
 
 -- Open current file as it was at a given commit, in a scratch (non-savable) buffer
 local function git_show_at_commit()
@@ -130,6 +152,12 @@ vim.keymap.set('i', '<C-F>', 'copilot#Accept("\\<CR>")', {
 })
 vim.keymap.set('i', '<C-D>', '<Plug>(copilot-accept-word)')
 vim.g.copilot_no_tab_map = true
+
+-- Copy file name to clipboard
+vim.keymap.set("n", "<leader>cf", function()
+  vim.fn.setreg("+", vim.fn.expand("%"))
+  print("Copied: " .. vim.fn.expand("%"))
+end, { desc = "Copy file name to clipboard" })
 
 -- lua snip
 -- local ls = require("luasnip");
