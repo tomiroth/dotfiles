@@ -53,3 +53,21 @@ Commands:
 - =/go-usage= shows the usage panel (=R= refreshes, =Esc= closes).
 - =/go-usage refresh= bypasses the one-minute cache.
 - =/go-usage status= toggles the compact footer status.
+
+* pi: long-command-shell extension
+Pins a scrollable, boxed terminal view above Pi's editor while an agent =bash=
+tool call runs longer than a threshold. The box shows the command, elapsed time
+and output, follows the tail by default, then clears when the command finishes.
+Scroll with the mouse wheel or =alt+up=/=alt+down= (=alt+pageUp=,
+=alt+pageDown=, =alt+home= and =alt+end= also work); scrolling up pauses
+auto-follow. It observes tool execution events, so the built-in bash tool and
+its rendering are unchanged.
+
+Configure with =PI_LONG_SHELL_DELAY_MS= (default =2000=),
+=PI_LONG_SHELL_LINES= (history kept for scrolling, default =200=) and
+=PI_LONG_SHELL_BOX_HEIGHT= (defaults to =auto=: 30% of the terminal's rows,
+clamped to 6-30, and recalculated when the window is resized; set a number for
+a fixed height). At runtime, =/long-shell= shows settings, =/long-shell on|off=
+toggles the box, =/long-shell height <n>= fixes the height live,
+=/long-shell height auto= restores the 30% behaviour, and =/long-shell <ms>=
+changes the delay.
