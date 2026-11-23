@@ -37,6 +37,7 @@
                          v/V/C-v select, y yank, Esc/q exit
   C-b u                  Claude Code usage
   C-b S                  Claude: commit staged files
+  C-b R                  Jump to a running agent (pi, claude, ...)
   C-b ?                  This cheat sheet
   Esc                    Close usage / commit / cheat-sheet popup
 

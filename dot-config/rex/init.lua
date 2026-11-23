@@ -202,6 +202,98 @@ rex.action{
 }
 rex.bind("ctrl+b>shift+s", "claude_commit_popup")
 
+-- ctrl+b R : pick from the running agents (pi, claude, codex, ...) across all
+-- sessions and jump to the one chosen. Uses Rex's built-in picker (jk/enter).
+local agent_names = { pi = true, claude = true, codex = true, gemini = true,
+  opencode = true, aider = true, amp = true }
+
+rex.action{
+  name = "agents_popup",
+  title = "Jump to Running Agent",
+  category = "Agent",
+  run = function(ctx)
+    local items = {}
+    local lookup = {}
+    local sessions = (rex.call("session.list") or {}).sessions or {}
+    for _, s in ipairs(sessions) do
+      local view = rex.session.view{ session_id = s.session_id }
+      if view then
+        for _, win in ipairs(view.windows or {}) do
+          for _, layer in ipairs(win.layers or {}) do
+            for _, block in ipairs(layer.blocks or {}) do
+              if block.creator_name == "com.superlogical.terminal" then
+                local status = rex.block.call("com.superlogical.terminal", "program_status",
+                  { block_id = block.block_id })
+                local records = (status and status.records) or {}
+                local foreground_agent
+                if #records == 0 then
+                  local proc = rex.block.call("com.superlogical.terminal", "process",
+                    { block_id = block.block_id })
+                  local fg = proc and proc.foreground
+                  local base = fg and (fg.argv0 or fg.name)
+                  base = base and base:match("([^/]+)$")
+                  if base and agent_names[base] then foreground_agent = base end
+                end
+                local to_add = {}
+                if #records > 0 then
+                  for _, rec in ipairs(records) do
+                    table.insert(to_add, rec)
+                  end
+                elseif foreground_agent then
+                  table.insert(to_add, { app = foreground_agent, state = "running" })
+                end
+                for _, rec in ipairs(to_add) do
+                  local agent = rec.app or rec.effective_app or foreground_agent or "agent"
+                  local state = rec.state or "running"
+                  local proc = rex.block.call("com.superlogical.terminal", "process",
+                    { block_id = block.block_id })
+                  local cwd = (proc and proc.foreground and proc.foreground.cwd) or ""
+                  local label = string.format("%s | %s (%s) | %s",
+                    s.label or s.session_id, agent, state, cwd)
+                  local composite = s.session_id .. "|" .. block.block_id .. "|" .. label
+                  table.insert(items, { id = composite })
+                  lookup[composite] = { session_id = s.session_id, block_id = block.block_id }
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
+    rex.log("info", "agents_popup: found " .. #items .. " agents")
+    if #items == 0 then
+      rex.log("warn", "no running agents found")
+      return
+    end
+
+    local choice = rex.ui.pick{ title = "Running agents", items = items }
+    local selected
+    if type(choice) == "table" then
+      if type(choice.ids) == "table" and choice.ids[1] then
+        selected = choice.ids[1]
+      elseif type(choice.id) == "string" then
+        selected = choice.id
+      elseif type(choice.text) == "string" then
+        selected = choice.text
+      end
+    elseif type(choice) == "string" then
+      selected = choice
+    end
+    if not selected then return end
+
+    local sid, bid = selected:match("^([^|]+)|([^|]+)|")
+    if not sid or not bid then return end
+
+    local oka, erra = pcall(rex.call, "session.attach", { session_id = sid })
+    rex.log("info", "agents_popup: attach " .. tostring(oka) .. " " .. tostring(erra))
+    local okf, errf = pcall(rex.call, "session.focus_block", { session_id = sid, block_id = bid })
+    rex.log("info", "agents_popup: focus " .. tostring(okf) .. " " .. tostring(errf))
+    rex.client.queue("session.select", { session_id = sid })
+  end,
+}
+rex.bind("ctrl+b>shift+r", "agents_popup")
+
 -- ctrl+b [ : tmux-style copy mode, using Rex's built-in vim-style copy mode.
 -- h/j/k/l move, / and ? search scrollback, v/V/C-v select, y yanks, Esc/q exits.
 -- The nvim scrollback popup below remains available from the command palette.
