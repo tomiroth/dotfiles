@@ -66,6 +66,8 @@
   alt+shift+cmd+arrows   Move pane
   shift+cmd+enter        Zoom pane
   alt+cmd+enter          Float pane
+  alt+cmd+m              Minimize floating pane
+  alt+shift+cmd+enter    Minimize all floating panes
   cmd+f / cmd+g          Find / find next
   cmd+up / cmd+down      Jump to previous / next prompt
   shift+cmd+g            Go to directory

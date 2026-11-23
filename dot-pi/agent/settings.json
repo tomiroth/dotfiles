@@ -5,5 +5,5 @@
   "packages": [
     "npm:pi-vim"
   ],
-  "hideThinkingBlock": true
+  "hideThinkingBlock": false
 }
