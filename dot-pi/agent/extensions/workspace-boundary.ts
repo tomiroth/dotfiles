@@ -1,5 +1,5 @@
 import { existsSync, realpathSync } from "node:fs";
-import { homedir } from "node:os";
+import { homedir, tmpdir } from "node:os";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { isToolCallEventType, type ExtensionAPI, type ExtensionContext } from "@earendil-works/pi-coding-agent";
 
@@ -28,6 +28,13 @@ function expandPath(cwd: string, path: string): string {
 	return resolve(cwd, value);
 }
 
+const safeRoots = ["/tmp", "/var/tmp", "/dev/shm", tmpdir()];
+
+function isSafeRoot(target: string): boolean {
+	const canonicalTarget = canonicalizePath(target);
+	return safeRoots.some((root) => isWithin(canonicalizePath(root), canonicalTarget));
+}
+
 function isOutsideFrom(cwd: string, from: string, path: string): boolean {
 	// Keep the lexical check separate from the real-path check. In particular,
 	// a path below cwd must not be treated as outside merely because cwd (or a
@@ -35,6 +42,7 @@ function isOutsideFrom(cwd: string, from: string, path: string): boolean {
 	// prevent a child symlink from escaping the workspace.
 	const workspace = resolve(cwd);
 	const target = expandPath(from, path);
+	if (isSafeRoot(target)) return false;
 	if (!isWithin(workspace, target)) return true;
 
 	return !isWithin(canonicalizePath(workspace), canonicalizePath(target));
@@ -74,12 +82,16 @@ const scriptCommands = new Set([
 
 const commandPrefixes = new Set(["sudo", "env", "command", "exec", "time", "nice"]);
 
-function firstCommand(segment: string): string | undefined {
+function firstCommandToken(segment: string): string | undefined {
 	const words = segment.trim().split(/\s+/);
 	let index = 0;
 	while (words[index] && commandPrefixes.has(words[index].toLowerCase())) index++;
 	while (words[index] && /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[index])) index++;
-	const word = words[index];
+	return words[index];
+}
+
+function firstCommand(segment: string): string | undefined {
+	const word = firstCommandToken(segment);
 	if (!word) return undefined;
 	const name = word.replace(/^[(`'"]+|[)`'"]+$/g, "").toLowerCase();
 	return name.split("/").pop() || name;
@@ -105,6 +117,14 @@ function hasWriteHint(command: string | undefined, segment: string): boolean {
 function bashMayModifyOutside(cwd: string, command: string): boolean {
 	let effectiveCwd = resolve(cwd);
 
+	// Heredocs and other multi-line script bodies are not split into parseable
+	// segments. Scan the whole command for path-like targets in that case.
+	if (command.includes("<<")) {
+		const commandToken = firstCommandToken(command)?.replace(/^['"]|['"]$/g, "");
+		const paths = candidatePaths(command).filter((path) => path !== commandToken);
+		if (paths.some((path) => isOutsideFrom(cwd, cwd, path))) return true;
+	}
+
 	for (const rawSegment of command.split(/&&|\|\||[|;\n]/)) {
 		const segment = rawSegment.trim();
 		if (!segment) continue;
@@ -122,7 +142,7 @@ function bashMayModifyOutside(cwd: string, command: string): boolean {
 		if (!hasOutputRedirect && !commandIsMutating(name, segment)) continue;
 		if (!hasWriteHint(name, segment)) continue;
 
-		if (name === "cp" || name === "install") {
+		if (name === "cp" || name === "install" || name === "mv") {
 			// Only the final argument can create or modify a file outside the
 			// workspace; earlier arguments are read-only sources.
 			const args = words.slice(words.findIndex((word) => word === name) + 1).filter((word) => !word.startsWith("-"));
@@ -131,7 +151,16 @@ function bashMayModifyOutside(cwd: string, command: string): boolean {
 			continue;
 		}
 
-		if (candidatePaths(segment).some((path) => isOutsideFrom(cwd, effectiveCwd, path))) return true;
+		// The executable itself may be invoked by its full path (e.g.
+		// /usr/bin/sed). That path is not a file operand and must not be
+		// mistaken for a target outside the workspace.
+		const commandToken = firstCommandToken(segment)?.replace(/^['"]|['"]$/g, "");
+		const paths = candidatePaths(segment).filter((path) => path !== commandToken);
+		if (paths.some((path) => isOutsideFrom(cwd, effectiveCwd, path))) return true;
+
+		// A mutating command with no explicit path operates in effectiveCwd.
+		// If that directory is outside the workspace, the operation is outside.
+		if (paths.length === 0 && isOutside(cwd, effectiveCwd)) return true;
 	}
 	return false;
 }
