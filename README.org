@@ -1,5 +1,6 @@
-Set up home config using stow. Pi config (settings, keybindings, extensions, and
-the npm package manifest) lives in =dot-pi/agent/=. Create the Pi agent directory
+Set up home config using stow. Pi config (settings, keybindings, extensions,
+skills, and the npm package manifest) lives in =dot-pi/agent/=. Create the Pi
+agent directory
 first so stow links individual files instead of folding =~/.pi= into the repo;
 Pi's generated state (auth, sessions, model cache) stays outside dotfiles.
 #+begin_src bash
@@ -71,3 +72,11 @@ a fixed height). At runtime, =/long-shell= shows settings, =/long-shell on|off=
 toggles the box, =/long-shell height <n>= fixes the height live,
 =/long-shell height auto= restores the 30% behaviour, and =/long-shell <ms>=
 changes the delay.
+
+* pi: commit-staged skill
+Reviews the staged diff, drafts a commit message in the repository's existing
+style, and asks for explicit approval before committing. It only commits what
+is already staged: no =git add=, =-a=, amend, or push. Run =/skill:commit-staged=
+(or ask Pi to commit the staged files); arguments are treated as requested
+wording for the message. Skills in =dot-pi/agent/skills= are linked into
+=~/.pi/agent/skills= by Stow, so no manual setup is needed.
