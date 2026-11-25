@@ -99,14 +99,21 @@ function isAllowedDir(cwd: string, target: string): boolean {
 	return dirs.some((dir) => isWithin(canonicalizePath(dir), canonicalTarget));
 }
 
-/** Directory to suggest allowing for a target path (the dir itself, or its parent for files). */
-function suggestedDir(target: string): string {
+/**
+ * Directory to suggest allowing for a target path (the dir itself, or its parent for files).
+ * Never suggests the filesystem root: falls back to the target itself, or undefined if the
+ * target is the root.
+ */
+function suggestedDir(target: string): string | undefined {
+	const isRoot = (path: string) => dirname(path) === path;
+	let dir: string;
 	try {
-		if (existsSync(target) && statSync(target).isDirectory()) return target;
+		dir = existsSync(target) && statSync(target).isDirectory() ? target : dirname(target);
 	} catch {
-		// fall through
+		dir = dirname(target);
 	}
-	return dirname(target);
+	if (!isRoot(dir)) return dir;
+	return isRoot(target) ? undefined : target;
 }
 
 function isOutsideFrom(cwd: string, from: string, path: string): boolean {
@@ -131,6 +138,29 @@ const safeDevicePaths = ["/dev/null", "/dev/stdout", "/dev/stderr", "/dev/fd/", 
 
 function isSafeDevice(path: string): boolean {
 	return safeDevicePaths.some((prefix) => path === prefix || (prefix.endsWith("/") && path.startsWith(prefix)));
+}
+
+/**
+ * Remove heredoc bodies (everything after the line containing `<<DELIM` up to the
+ * closing DELIM line), keeping only the shell text. Here-strings (`<<<`) are untouched.
+ */
+function stripHeredocs(command: string): string {
+	const lines = command.split("\n");
+	const out: string[] = [];
+	const pending: { delim: string; stripTabs: boolean }[] = [];
+	const opener = /(?<!<)<<(?!<)(-?)\s*(?:'([^']*)'|"([^"]*)"|\\?([A-Za-z0-9_.-]+))/g;
+	for (const line of lines) {
+		if (pending.length) {
+			const { delim, stripTabs } = pending[0];
+			if ((stripTabs ? line.replace(/^\t+/, "") : line) === delim) pending.shift();
+			continue;
+		}
+		out.push(line);
+		for (const m of line.matchAll(opener)) {
+			pending.push({ delim: m[2] ?? m[3] ?? m[4], stripTabs: m[1] === "-" });
+		}
+	}
+	return out.join("\n");
 }
 
 /** Extract explicit path-looking strings from a shell command. */
@@ -198,15 +228,12 @@ function bashOutsideTargets(cwd: string, command: string): string[] {
 	const targets = new Set<string>();
 	let effectiveCwd = resolve(cwd);
 
-	// Heredocs and other multi-line script bodies are not split into parseable
-	// segments. Scan the whole command for path-like targets in that case.
-	if (command.includes("<<")) {
-		const commandToken = firstCommandToken(command)?.replace(/^['"]|['"]$/g, "");
-		const paths = candidatePaths(command).filter((path) => path !== commandToken);
-		for (const path of paths) if (isOutsideFrom(cwd, cwd, path)) targets.add(expandPath(cwd, path));
-	}
+	// Heredoc bodies are data (often code containing `/regex/` or URL-ish text),
+	// not shell. Only scan the shell part; the redirect/command on the `<<` line
+	// (e.g. `cat > /etc/x <<EOF`) is still checked below.
+	const shell = stripHeredocs(command);
 
-	for (const rawSegment of command.split(/&&|\|\||[|;\n]/)) {
+	for (const rawSegment of shell.split(/&&|\|\||[|;\n]/)) {
 		const segment = rawSegment.trim();
 		if (!segment) continue;
 
@@ -281,7 +308,7 @@ async function confirmOutside(
 ): Promise<boolean> {
 	if (!ctx.hasUI) return false;
 
-	const dirs = [...new Set(targets.map((t) => suggestedDir(t)))];
+	const dirs = [...new Set(targets.map((t) => suggestedDir(t)).filter((d): d is string => !!d))];
 	const options = [ALLOW_ONCE, ...dirs.map(alwaysLabel), ALLOW_OTHER, BLOCK];
 	const choice = await ctx.ui.select(
 		`Allow modification outside the workspace?\n\n${explanation}\n\n${description}\n\nWorkspace: ${ctx.cwd}`,
