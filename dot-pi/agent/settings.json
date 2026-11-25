@@ -3,7 +3,8 @@
   "defaultProvider": "opencode-go",
   "defaultModel": "hy4-flash-free",
   "packages": [
-    "npm:pi-vim"
+    "npm:pi-vim",
+    "npm:pi-questions"
   ],
   "hideThinkingBlock": false
 }

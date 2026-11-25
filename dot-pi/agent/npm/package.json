@@ -2,6 +2,7 @@
   "name": "pi-extensions",
   "private": true,
   "dependencies": {
+    "pi-questions": "^0.3.4",
     "pi-vim": "^0.16.0"
   }
 }
