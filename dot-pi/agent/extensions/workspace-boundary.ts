@@ -1,4 +1,4 @@
-import { existsSync, realpathSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { isToolCallEventType, type ExtensionAPI, type ExtensionContext } from "@earendil-works/pi-coding-agent";
@@ -35,6 +35,80 @@ function isSafeRoot(target: string): boolean {
 	return safeRoots.some((root) => isWithin(canonicalizePath(root), canonicalTarget));
 }
 
+// ---------------------------------------------------------------------------
+// Per-project allowlist: directories (and all their children) that are always
+// allowed to be modified when working from a given project.
+// Stored in ~/.pi/agent/workspace-boundary.json as { projects: { [cwd]: [dir] } }
+// ---------------------------------------------------------------------------
+
+const configPath = resolve(homedir(), ".pi", "agent", "workspace-boundary.json");
+
+type Config = { projects: Record<string, string[]> };
+
+function loadConfig(): Config {
+	try {
+		const parsed = JSON.parse(readFileSync(configPath, "utf8"));
+		if (parsed && typeof parsed === "object" && parsed.projects && typeof parsed.projects === "object") return parsed;
+	} catch {
+		// Missing or invalid config: treat as empty.
+	}
+	return { projects: {} };
+}
+
+function saveConfig(config: Config): void {
+	mkdirSync(dirname(configPath), { recursive: true });
+	writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`);
+}
+
+function projectKey(cwd: string): string {
+	return canonicalizePath(cwd);
+}
+
+function getAllowedDirs(cwd: string): string[] {
+	return loadConfig().projects[projectKey(cwd)] ?? [];
+}
+
+function addAllowedDir(cwd: string, dir: string): string {
+	const canonical = canonicalizePath(dir);
+	const config = loadConfig();
+	const key = projectKey(cwd);
+	const dirs = config.projects[key] ?? [];
+	if (!dirs.includes(canonical)) dirs.push(canonical);
+	config.projects[key] = dirs.sort();
+	saveConfig(config);
+	return canonical;
+}
+
+function removeAllowedDir(cwd: string, dir: string): boolean {
+	const config = loadConfig();
+	const key = projectKey(cwd);
+	const dirs = config.projects[key] ?? [];
+	const canonical = canonicalizePath(dir);
+	const next = dirs.filter((d) => d !== canonical && d !== dir);
+	if (next.length === dirs.length) return false;
+	if (next.length) config.projects[key] = next;
+	else delete config.projects[key];
+	saveConfig(config);
+	return true;
+}
+
+function isAllowedDir(cwd: string, target: string): boolean {
+	const dirs = getAllowedDirs(cwd);
+	if (!dirs.length) return false;
+	const canonicalTarget = canonicalizePath(target);
+	return dirs.some((dir) => isWithin(canonicalizePath(dir), canonicalTarget));
+}
+
+/** Directory to suggest allowing for a target path (the dir itself, or its parent for files). */
+function suggestedDir(target: string): string {
+	try {
+		if (existsSync(target) && statSync(target).isDirectory()) return target;
+	} catch {
+		// fall through
+	}
+	return dirname(target);
+}
+
 function isOutsideFrom(cwd: string, from: string, path: string): boolean {
 	// Keep the lexical check separate from the real-path check. In particular,
 	// a path below cwd must not be treated as outside merely because cwd (or a
@@ -43,6 +117,7 @@ function isOutsideFrom(cwd: string, from: string, path: string): boolean {
 	const workspace = resolve(cwd);
 	const target = expandPath(from, path);
 	if (isSafeRoot(target)) return false;
+	if (isAllowedDir(cwd, target)) return false;
 	if (!isWithin(workspace, target)) return true;
 
 	return !isWithin(canonicalizePath(workspace), canonicalizePath(target));
@@ -115,6 +190,12 @@ function hasWriteHint(command: string | undefined, segment: string): boolean {
 
 /** True only when a command explicitly targets a path outside the workspace. */
 function bashMayModifyOutside(cwd: string, command: string): boolean {
+	return bashOutsideTargets(cwd, command).length > 0;
+}
+
+/** Absolute paths outside the workspace that a command appears to modify. */
+function bashOutsideTargets(cwd: string, command: string): string[] {
+	const targets = new Set<string>();
 	let effectiveCwd = resolve(cwd);
 
 	// Heredocs and other multi-line script bodies are not split into parseable
@@ -122,7 +203,7 @@ function bashMayModifyOutside(cwd: string, command: string): boolean {
 	if (command.includes("<<")) {
 		const commandToken = firstCommandToken(command)?.replace(/^['"]|['"]$/g, "");
 		const paths = candidatePaths(command).filter((path) => path !== commandToken);
-		if (paths.some((path) => isOutsideFrom(cwd, cwd, path))) return true;
+		for (const path of paths) if (isOutsideFrom(cwd, cwd, path)) targets.add(expandPath(cwd, path));
 	}
 
 	for (const rawSegment of command.split(/&&|\|\||[|;\n]/)) {
@@ -147,7 +228,7 @@ function bashMayModifyOutside(cwd: string, command: string): boolean {
 			// workspace; earlier arguments are read-only sources.
 			const args = words.slice(words.findIndex((word) => word === name) + 1).filter((word) => !word.startsWith("-"));
 			const destination = args.at(-1);
-			if (destination && isOutsideFrom(cwd, effectiveCwd, destination)) return true;
+			if (destination && isOutsideFrom(cwd, effectiveCwd, destination)) targets.add(expandPath(effectiveCwd, destination));
 			continue;
 		}
 
@@ -156,13 +237,13 @@ function bashMayModifyOutside(cwd: string, command: string): boolean {
 		// mistaken for a target outside the workspace.
 		const commandToken = firstCommandToken(segment)?.replace(/^['"]|['"]$/g, "");
 		const paths = candidatePaths(segment).filter((path) => path !== commandToken);
-		if (paths.some((path) => isOutsideFrom(cwd, effectiveCwd, path))) return true;
+		for (const path of paths) if (isOutsideFrom(cwd, effectiveCwd, path)) targets.add(expandPath(effectiveCwd, path));
 
 		// A mutating command with no explicit path operates in effectiveCwd.
 		// If that directory is outside the workspace, the operation is outside.
-		if (paths.length === 0 && isOutside(cwd, effectiveCwd)) return true;
+		if (paths.length === 0 && isOutside(cwd, effectiveCwd)) targets.add(effectiveCwd);
 	}
-	return false;
+	return [...targets];
 }
 
 function explainCommand(command: string): string {
@@ -187,21 +268,83 @@ function explainCommand(command: string): string {
 	return "It may run a shell operation that changes files outside the workspace.";
 }
 
+const ALLOW_ONCE = "Allow once";
+const BLOCK = "Block";
+const ALLOW_OTHER = "Always allow another directory…";
+const alwaysLabel = (dir: string) => `Always allow ${dir} (and children) in this project`;
+
 async function confirmOutside(
 	ctx: ExtensionContext,
 	description: string,
 	explanation: string,
+	targets: string[],
 ): Promise<boolean> {
 	if (!ctx.hasUI) return false;
-	return ctx.ui.confirm(
-		"Allow modification outside the workspace?",
-		`${explanation}\n\n${description}\n\nWorkspace: ${ctx.cwd}`,
+
+	const dirs = [...new Set(targets.map((t) => suggestedDir(t)))];
+	const options = [ALLOW_ONCE, ...dirs.map(alwaysLabel), ALLOW_OTHER, BLOCK];
+	const choice = await ctx.ui.select(
+		`Allow modification outside the workspace?\n\n${explanation}\n\n${description}\n\nWorkspace: ${ctx.cwd}`,
+		options,
 	);
+	if (!choice || choice === BLOCK) return false;
+	if (choice === ALLOW_ONCE) return true;
+
+	if (choice === ALLOW_OTHER) {
+		const input = await ctx.ui.input("Directory to always allow (and its children):", dirs[0] ?? "");
+		if (!input?.trim()) return false;
+		const saved = addAllowedDir(ctx.cwd, expandPath(ctx.cwd, input));
+		ctx.ui.notify(`Always allowed in this project: ${saved}`, "info");
+		// Only proceed if the new rule actually covers every target.
+		return targets.every((t) => isAllowedDir(ctx.cwd, t));
+	}
+
+	const dir = dirs.find((d) => choice === alwaysLabel(d));
+	if (!dir) return false;
+	const saved = addAllowedDir(ctx.cwd, dir);
+	ctx.ui.notify(`Always allowed in this project: ${saved}`, "info");
+	return true;
 }
 
-export { isOutside, bashMayModifyOutside };
+export { isOutside, bashMayModifyOutside, bashOutsideTargets };
 
 export default function (pi: ExtensionAPI) {
+	pi.registerCommand("allow-dir", {
+		description: "Always allow modifying a directory (and its children) from this project",
+		handler: async (args, ctx) => {
+			let dir = args?.trim();
+			if (!dir && ctx.hasUI) dir = (await ctx.ui.input("Directory to always allow (and its children):", ""))?.trim();
+			if (!dir) return ctx.ui.notify("Usage: /allow-dir <path>", "warning");
+			const saved = addAllowedDir(ctx.cwd, expandPath(ctx.cwd, dir));
+			ctx.ui.notify(`Always allowed in this project: ${saved}`, "info");
+		},
+	});
+
+	pi.registerCommand("disallow-dir", {
+		description: "Remove a directory from this project's always-allowed list",
+		handler: async (args, ctx) => {
+			let dir = args?.trim();
+			const dirs = getAllowedDirs(ctx.cwd);
+			if (!dir && ctx.hasUI && dirs.length) dir = await ctx.ui.select("Remove which allowed directory?", dirs);
+			if (!dir) return ctx.ui.notify("No allowed directories to remove", "info");
+			const removed = removeAllowedDir(ctx.cwd, expandPath(ctx.cwd, dir));
+			ctx.ui.notify(removed ? `Removed: ${dir}` : `Not in allowed list: ${dir}`, removed ? "info" : "warning");
+		},
+	});
+
+	pi.registerCommand("allowed-dirs", {
+		description: "List directories always allowed from this project",
+		handler: async (_args, ctx) => {
+			const dirs = getAllowedDirs(ctx.cwd);
+			ctx.ui.notify(
+				dirs.length
+					? `Always allowed from ${ctx.cwd}:\n${dirs.map((d) => `  ${d}`).join("\n")}`
+					: "No always-allowed directories for this project",
+				"info",
+			);
+		},
+	});
+
 	pi.on("tool_call", async (event, ctx) => {
 		if (isToolCallEventType("write", event) || isToolCallEventType("edit", event)) {
 			const path = event.input.path;
@@ -210,18 +353,17 @@ export default function (pi: ExtensionAPI) {
 					ctx,
 					`${event.toolName}: ${path}`,
 					`This will modify a file outside the workspace: ${path}`,
+					[expandPath(ctx.cwd, path)],
 				);
 				if (!allowed) return { block: true, reason: `Modification outside workspace blocked: ${path}` };
 			}
 			return;
 		}
 
-		if (isToolCallEventType("bash", event) && bashMayModifyOutside(ctx.cwd, event.input.command)) {
-			const allowed = await confirmOutside(
-				ctx,
-				`bash: ${event.input.command}`,
-				explainCommand(event.input.command),
-			);
+		if (isToolCallEventType("bash", event)) {
+			const targets = bashOutsideTargets(ctx.cwd, event.input.command);
+			if (!targets.length) return;
+			const allowed = await confirmOutside(ctx, `bash: ${event.input.command}`, explainCommand(event.input.command), targets);
 			if (!allowed) return { block: true, reason: "Possible modification outside workspace blocked" };
 		}
 	});
